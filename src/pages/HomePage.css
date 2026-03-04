@@ -1,0 +1,502 @@
+/* HomePage Styles */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap');
+
+.home-container {
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #4a1a6b 0%, #2d0a4e 40%, #1a0533 100%);
+  padding: 60px 24px;
+  font-family: 'Nunito', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative background elements */
+.home-container::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.home-container::after {
+  content: '';
+  position: absolute;
+  bottom: -20%;
+  left: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(107, 74, 226, 0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Header */
+.home-header {
+  text-align: center;
+  margin-bottom: 60px;
+  position: relative;
+  z-index: 1;
+}
+
+.home-header h1 {
+  font-size: 52px;
+  font-weight: 900;
+  color: white;
+  margin-bottom: 12px;
+  text-shadow: 0 4px 20px rgba(236, 72, 153, 0.3);
+}
+
+.home-header p {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+}
+
+/* Version Cards Grid */
+.version-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 40px;
+  max-width: 1000px;
+  margin: 0 auto 60px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Individual Card */
+.version-card {
+  background: linear-gradient(145deg, rgba(45, 10, 78, 0.9) 0%, rgba(26, 5, 51, 0.95) 100%);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 32px;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.version-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.version-card.featured {
+  border-color: rgba(236, 72, 153, 0.5);
+  box-shadow: 0 0 40px rgba(236, 72, 153, 0.15);
+}
+
+.version-card.featured:hover {
+  border-color: rgba(236, 72, 153, 0.8);
+  box-shadow: 0 20px 60px rgba(236, 72, 153, 0.25);
+}
+
+/* Badge */
+.badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+}
+
+/* Card Preview */
+.card-preview {
+  width: 100%;
+  height: 180px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.preview-icon {
+  width: 200px;
+  height: auto;
+  opacity: 0.9;
+}
+
+/* Card Content */
+.version-card h2 {
+  font-size: 26px;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 12px;
+}
+
+.card-description {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+/* Pros/Cons List */
+.pros-cons {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 28px 0;
+}
+
+.pros-cons li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.pros-cons li.pro {
+  color: #4ade80;
+}
+
+.pros-cons li.con {
+  color: #f87171;
+}
+
+.check-icon, .cross-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Test Button */
+.test-button {
+  display: block;
+  width: 100%;
+  padding: 16px 24px;
+  background: rgba(107, 74, 226, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  color: white;
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.test-button:hover {
+  background: rgba(107, 74, 226, 0.8);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(107, 74, 226, 0.4);
+}
+
+.test-button.primary {
+  background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+  border-color: transparent;
+  box-shadow: 0 4px 20px rgba(236, 72, 153, 0.4);
+}
+
+.test-button.primary:hover {
+  box-shadow: 0 8px 30px rgba(236, 72, 153, 0.6);
+  transform: translateY(-2px);
+}
+
+/* Competition Section */
+.competition-section {
+  max-width: 1000px;
+  margin: 0 auto 60px;
+  position: relative;
+  z-index: 1;
+}
+
+.competition-card {
+  background: linear-gradient(145deg, rgba(30, 27, 75, 0.95) 0%, rgba(49, 46, 129, 0.9) 100%);
+  border: 2px solid rgba(239, 68, 68, 0.4);
+  border-radius: 24px;
+  padding: 32px;
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  box-shadow: 0 0 40px rgba(239, 68, 68, 0.1);
+  transition: all 0.3s ease;
+}
+
+.competition-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.6);
+}
+
+.competition-card__preview {
+  flex-shrink: 0;
+  width: 200px;
+  height: 160px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.competition-card__content {
+  flex: 1;
+}
+
+.competition-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+}
+
+.competition-card__content h3 {
+  font-size: 24px;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 12px;
+}
+
+.competition-card__content p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.competition-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.competition-features li {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.competition-btn {
+  display: inline-block;
+  width: auto;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  border-color: transparent;
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
+}
+
+.competition-btn:hover {
+  box-shadow: 0 8px 30px rgba(239, 68, 68, 0.6);
+}
+
+/* Mystery Map Challenge Section */
+.mystery-section {
+  max-width: 1000px;
+  margin: 0 auto 60px;
+  position: relative;
+  z-index: 1;
+}
+
+.mystery-card {
+  background: linear-gradient(145deg, rgba(30, 16, 64, 0.95) 0%, rgba(45, 25, 80, 0.9) 100%);
+  border: 2px solid rgba(245, 158, 11, 0.4);
+  border-radius: 24px;
+  padding: 32px;
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  box-shadow: 0 0 40px rgba(245, 158, 11, 0.1);
+  transition: all 0.3s ease;
+}
+
+.mystery-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(245, 158, 11, 0.2);
+  border-color: rgba(245, 158, 11, 0.6);
+}
+
+.mystery-card__preview {
+  flex-shrink: 0;
+  width: 200px;
+  height: 160px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mystery-card__content {
+  flex: 1;
+}
+
+.mystery-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #1e1040;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  animation: mysteryBadgePulse 2s ease-in-out infinite;
+}
+
+@keyframes mysteryBadgePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
+}
+
+.mystery-card__content h3 {
+  font-size: 24px;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 12px;
+}
+
+.mystery-card__content p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.mystery-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.mystery-features li {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.mystery-btn {
+  display: inline-block;
+  width: auto;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  border-color: transparent;
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+  color: #1e1040;
+}
+
+.mystery-btn:hover {
+  box-shadow: 0 8px 30px rgba(245, 158, 11, 0.6);
+  color: #1e1040;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+footer p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+footer .footer-sub {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .version-cards {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+  }
+  
+  .home-header h1 {
+    font-size: 36px;
+  }
+  
+  .home-header p {
+    font-size: 16px;
+  }
+  
+  .competition-card,
+  .mystery-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .competition-card__preview,
+  .mystery-card__preview {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .competition-features,
+  .mystery-features {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+}
+
+@media (max-width: 500px) {
+  .home-container {
+    padding: 40px 16px;
+  }
+  
+  .version-card {
+    padding: 24px;
+  }
+  
+  .home-header h1 {
+    font-size: 28px;
+  }
+  
+  .card-preview {
+    height: 140px;
+  }
+  
+  .preview-icon {
+    width: 150px;
+  }
+  
+  .competition-card,
+  .mystery-card {
+    padding: 24px;
+  }
+  
+  .competition-card__content h3,
+  .mystery-card__content h3 {
+    font-size: 20px;
+  }
+}

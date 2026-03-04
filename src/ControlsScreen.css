@@ -1,0 +1,133 @@
+/* ControlsScreen Styles */
+/* Clean, minimal aesthetic matching reference */
+
+.controls-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+  padding: 60px 40px;
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+/* Control Section */
+.control-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 20px;
+  min-width: 200px;
+}
+
+/* Sprite Container */
+.sprite-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80px;
+}
+
+.sprite-row {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+/* Controls Row */
+.controls-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Key Cluster */
+.key-cluster {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Key Row */
+.key-row {
+  display: flex;
+  gap: 6px;
+}
+
+.key-row--centered {
+  justify-content: center;
+}
+
+.key-row--spaced {
+  gap: 12px;
+}
+
+/* Key Cap - Dark Maroon-Purple Style */
+.key-cap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  height: 48px;
+  padding: 0 16px;
+  background-color: #2D1B3D;
+  border-radius: 10px;
+  color: #ffffff;
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 4px 0 #1a1025;
+}
+
+.key-cap--wide {
+  min-width: 140px;
+  padding: 0 32px;
+  border-radius: 24px;
+}
+
+.arrow-key {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+/* OR Divider */
+.or-divider {
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Mouse Icon Container */
+.mouse-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .controls-screen {
+    flex-direction: column;
+    gap: 60px;
+    padding: 40px 20px;
+  }
+  
+  .control-section {
+    min-width: auto;
+  }
+}
+
+/* Ensure crisp pixel art rendering */
+.sprite-container svg {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}

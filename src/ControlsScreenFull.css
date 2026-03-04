@@ -1,0 +1,319 @@
+/* ControlsScreenFull Styles */
+/* Full keyboard layout with neon/gaming aesthetic */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap');
+
+.controls-screen-full {
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    #0a1628 0%,
+    #1a2a4a 30%,
+    #0d1a2d 60%,
+    #0a1628 100%
+  );
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: auto;
+  position: relative;
+}
+
+/* Subtle grid pattern overlay */
+.controls-screen-full::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(rgba(0, 200, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 200, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+}
+
+/* Title */
+.controls-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 48px;
+  font-weight: 900;
+  color: #ffaa00;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 50px;
+  text-shadow: 
+    0 0 10px rgba(255, 170, 0, 0.5),
+    0 0 30px rgba(255, 170, 0, 0.3),
+    0 4px 0 #8B5A00;
+  position: relative;
+  z-index: 1;
+}
+
+/* Main layout */
+.controls-layout {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 30px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Labels sections */
+.labels-left,
+.labels-right {
+  position: relative;
+  width: 180px;
+  height: 400px;
+}
+
+/* Control Label */
+.control-label {
+  position: absolute;
+  z-index: 10;
+}
+
+.control-label__box {
+  background: rgba(0, 30, 60, 0.9);
+  border: 2px solid #00c8ff;
+  border-radius: 8px;
+  padding: 14px 20px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #00c8ff;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  line-height: 1.4;
+  text-align: center;
+  box-shadow: 
+    0 0 20px rgba(0, 200, 255, 0.4),
+    inset 0 0 25px rgba(0, 200, 255, 0.15);
+  white-space: nowrap;
+}
+
+.control-label--left {
+  right: 0;
+}
+
+.control-label--right {
+  left: 0;
+}
+
+/* Keyboard wrapper */
+.keyboard-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* Keyboard Container */
+.keyboard-container {
+  background: rgba(0, 20, 40, 0.9);
+  border: 3px solid #00c8ff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 
+    0 0 40px rgba(0, 200, 255, 0.4),
+    inset 0 0 80px rgba(0, 200, 255, 0.1);
+}
+
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.keyboard-row {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+/* Key spacers */
+.key-spacer {
+  width: 30px;
+}
+
+.key-spacer-small {
+  width: 15px;
+}
+
+/* Keyboard Key */
+.kb-key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 10px;
+  background: linear-gradient(
+    to bottom,
+    #4a5568 0%,
+    #2d3748 100%
+  );
+  border: 1px solid #5a6a7a;
+  border-radius: 6px;
+  color: #6a7a8a;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  cursor: default;
+  box-shadow: 
+    0 3px 0 #1a202c,
+    0 4px 8px rgba(0, 0, 0, 0.4);
+  transition: all 0.15s ease;
+}
+
+/* Highlighted keys */
+.kb-key--highlighted {
+  background: linear-gradient(
+    to bottom,
+    #ffffff 0%,
+    #e8e8e8 100%
+  );
+  border: 2px solid #00c8ff;
+  color: #1a202c;
+  font-weight: 700;
+  box-shadow: 
+    0 3px 0 #999,
+    0 0 20px rgba(0, 200, 255, 0.6),
+    inset 0 0 12px rgba(0, 200, 255, 0.25);
+  cursor: pointer;
+}
+
+/* Key sizes */
+.kb-key--wide {
+  min-width: 70px;
+}
+
+.kb-key--extra-wide {
+  min-width: 90px;
+}
+
+.kb-key--space {
+  min-width: 260px;
+  background: linear-gradient(
+    to bottom,
+    #ffffff 0%,
+    #e8e8e8 100%
+  );
+  border: 2px solid #00c8ff;
+  color: #1a202c;
+  font-weight: 700;
+  box-shadow: 
+    0 3px 0 #999,
+    0 0 25px rgba(0, 200, 255, 0.7),
+    inset 0 0 18px rgba(0, 200, 255, 0.3);
+}
+
+/* Arrow Keys Container */
+.arrow-keys-container {
+  position: absolute;
+  right: -120px;
+  bottom: 80px;
+  background: rgba(0, 20, 40, 0.9);
+  border: 3px solid #00c8ff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 
+    0 0 30px rgba(0, 200, 255, 0.4),
+    inset 0 0 40px rgba(0, 200, 255, 0.1);
+}
+
+.arrow-keys {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+.arrow-keys-row {
+  display: flex;
+  gap: 6px;
+}
+
+.arrow-keys-row--top {
+  margin-bottom: 0;
+}
+
+/* Bottom label */
+.bottom-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.bottom-label .control-label__box {
+  margin-top: 8px;
+}
+
+.control-label__connector-up {
+  display: block;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .controls-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .labels-left,
+  .labels-right {
+    position: relative;
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .control-label {
+    position: relative;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+  }
+  
+  .control-label__connector {
+    display: none;
+  }
+  
+  .arrow-keys-container {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    margin-top: 20px;
+  }
+}
+
+/* Glow animation for highlighted keys */
+@keyframes keyGlow {
+  0%, 100% {
+    box-shadow: 
+      0 3px 0 #999,
+      0 0 20px rgba(0, 200, 255, 0.6),
+      inset 0 0 12px rgba(0, 200, 255, 0.25);
+  }
+  50% {
+    box-shadow: 
+      0 3px 0 #999,
+      0 0 30px rgba(0, 200, 255, 0.8),
+      inset 0 0 18px rgba(0, 200, 255, 0.4);
+  }
+}
+
+.kb-key--highlighted {
+  animation: keyGlow 2s ease-in-out infinite;
+}
+
+.kb-key--space {
+  animation: keyGlow 2s ease-in-out infinite;
+}

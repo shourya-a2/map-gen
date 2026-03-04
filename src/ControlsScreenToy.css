@@ -1,0 +1,203 @@
+/* ControlsScreenToy Styles */
+/* Toy-like, clicky, fun arcade aesthetic */
+
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&display=swap');
+
+.controls-screen-toy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+  padding: 60px 40px;
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+/* Control Section */
+.control-section-toy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 20px;
+  min-width: 200px;
+}
+
+/* Sprite Container */
+.sprite-container-toy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80px;
+}
+
+.sprite-row-toy {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+/* Controls Row */
+.controls-row-toy {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Key Cluster */
+.key-cluster-toy {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Key Row */
+.key-row-toy {
+  display: flex;
+  gap: 8px;
+}
+
+.key-row-toy--centered {
+  justify-content: center;
+}
+
+.key-row-toy--spaced {
+  gap: 14px;
+}
+
+/* Toy Key - Chunky, Candy-like 3D Style */
+.toy-key {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  height: 56px;
+  padding: 0 18px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.05) 40%,
+    rgba(255, 255, 255, 0) 50%
+  ), #6B2D7A;
+  border-radius: 14px;
+  color: #ffffff;
+  font-family: 'Fredoka', 'Nunito', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  
+  /* The chunky 3D shadow - this is the magic */
+  box-shadow: 
+    0 6px 0 #3d1045,
+    0 8px 10px rgba(0, 0, 0, 0.25);
+  
+  transform: translateY(0px);
+  transition: filter 0.1s ease;
+  overflow: hidden;
+}
+
+/* Glossy shine overlay */
+.toy-key__shine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.25) 0%,
+    rgba(255, 255, 255, 0.08) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border-radius: 14px 14px 50% 50%;
+  pointer-events: none;
+}
+
+.toy-key__label {
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Wide spacebar - giant candy bar */
+.toy-key--wide {
+  min-width: 160px;
+  height: 54px;
+  padding: 0 36px;
+  border-radius: 27px;
+  font-size: 18px;
+}
+
+.toy-key--wide .toy-key__shine {
+  border-radius: 27px 27px 50% 50%;
+}
+
+/* Arrow keys */
+.arrow-key-toy {
+  font-size: 22px;
+  font-weight: 400;
+}
+
+/* OR Divider */
+.or-divider-toy {
+  font-family: 'Fredoka', 'Nunito', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Mouse Icon Container */
+.mouse-icon-container-toy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 12px;
+  transition: background 0.15s ease;
+}
+
+.mouse-icon-container-toy:hover {
+  background: rgba(107, 45, 122, 0.08);
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .controls-screen-toy {
+    flex-direction: column;
+    gap: 60px;
+    padding: 40px 20px;
+  }
+  
+  .control-section-toy {
+    min-width: auto;
+  }
+}
+
+/* Ensure crisp pixel art rendering */
+.sprite-container-toy svg {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* Extra hover juice - subtle glow on hover */
+.toy-key:hover {
+  box-shadow: 
+    0 6px 0 #3d1045,
+    0 8px 12px rgba(107, 45, 122, 0.35),
+    0 0 20px rgba(107, 45, 122, 0.15);
+}
+
+/* Active/pressed state via CSS as backup */
+.toy-key:active {
+  transform: translateY(4px);
+  box-shadow: 
+    0 2px 0 #3d1045,
+    0 3px 6px rgba(0, 0, 0, 0.2);
+}
