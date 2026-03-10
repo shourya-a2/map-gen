@@ -94,6 +94,62 @@ const MysteryIcon = () => (
   </svg>
 );
 
+const TeacherIcon = () => (
+  <svg viewBox="0 0 100 80" fill="none" className="preview-icon">
+    {/* Background */}
+    <rect x="0" y="0" width="100" height="80" rx="8" fill="#0f172a" />
+    {/* Dashboard grid */}
+    <rect x="8" y="12" width="40" height="28" rx="4" fill="#1e3a5f" stroke="#3b82f6" strokeWidth="1.5" />
+    <rect x="52" y="12" width="40" height="28" rx="4" fill="#1e3a5f" stroke="#3b82f6" strokeWidth="1.5" />
+    <rect x="8" y="44" width="40" height="28" rx="4" fill="#1e3a5f" stroke="#3b82f6" strokeWidth="1.5" />
+    <rect x="52" y="44" width="40" height="28" rx="4" fill="#1e3a5f" stroke="#3b82f6" strokeWidth="1.5" />
+    {/* Card 1 - Map preview */}
+    <rect x="12" y="18" width="14" height="10" rx="2" fill="#3b82f6" opacity="0.4" />
+    <rect x="28" y="18" width="16" height="3" rx="1" fill="#64748b" />
+    <rect x="28" y="24" width="12" height="2" rx="1" fill="#475569" />
+    {/* Card 2 - Stats */}
+    <rect x="56" y="18" width="8" height="16" rx="2" fill="#22c55e" opacity="0.6" />
+    <rect x="66" y="22" width="8" height="12" rx="2" fill="#3b82f6" opacity="0.6" />
+    <rect x="76" y="26" width="8" height="8" rx="2" fill="#f59e0b" opacity="0.6" />
+    {/* Card 3 - Map preview */}
+    <rect x="12" y="50" width="14" height="10" rx="2" fill="#f59e0b" opacity="0.4" />
+    <rect x="28" y="50" width="16" height="3" rx="1" fill="#64748b" />
+    <rect x="28" y="56" width="12" height="2" rx="1" fill="#475569" />
+    {/* Card 4 - Checkmarks */}
+    <circle cx="62" cy="54" r="4" fill="#22c55e" opacity="0.3" />
+    <path d="M60 54 L61.5 55.5 L64 52.5" stroke="#22c55e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <circle cx="74" cy="54" r="4" fill="#22c55e" opacity="0.3" />
+    <path d="M72 54 L73.5 55.5 L76 52.5" stroke="#22c55e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <circle cx="86" cy="54" r="4" fill="#64748b" opacity="0.3" />
+    {/* Crown/teacher indicator */}
+    <path d="M46 6 L50 2 L54 6 L52 6 L50 4 L48 6 Z" fill="#f59e0b" />
+  </svg>
+);
+
+const Teacher2Icon = () => (
+  <svg viewBox="0 0 100 80" fill="none" className="preview-icon">
+    {/* Background */}
+    <rect x="0" y="0" width="100" height="80" rx="8" fill="#16161f" />
+    {/* Join code card at top */}
+    <rect x="15" y="8" width="70" height="30" rx="6" fill="#1f1f2e" stroke="#ec4899" strokeWidth="1" opacity="0.8" />
+    <rect x="22" y="14" width="30" height="4" rx="2" fill="#ffffff" opacity="0.8" />
+    <rect x="22" y="22" width="45" height="8" rx="2" fill="#ec4899" opacity="0.3" />
+    <text x="30" y="29" fontSize="7" fill="white" fontWeight="bold">420042</text>
+    {/* Bottom sheet */}
+    <rect x="0" y="45" width="100" height="35" rx="12" fill="#1f1f2e" />
+    <rect x="0" y="45" width="100" height="2" fill="#ec4899" opacity="0.5" />
+    {/* Handle bar */}
+    <rect x="42" y="48" width="16" height="3" rx="1.5" fill="#ffffff" opacity="0.3" />
+    {/* Map cards in sheet */}
+    <rect x="8" y="55" width="18" height="18" rx="3" fill="#2d0a4e" stroke="#ec4899" strokeWidth="1" />
+    <rect x="30" y="55" width="18" height="18" rx="3" fill="#2d0a4e" stroke="#ec4899" strokeWidth="1" />
+    <rect x="52" y="55" width="18" height="18" rx="3" fill="#2d0a4e" stroke="#ec4899" strokeWidth="1" />
+    <rect x="74" y="55" width="18" height="18" rx="3" fill="#2d0a4e" stroke="#ec4899" strokeWidth="1" />
+    {/* Arrow hint */}
+    <path d="M48 64 L52 68 L48 72" stroke="#ec4899" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.6" />
+  </svg>
+);
+
 const CheckIcon = () => (
   <svg viewBox="0 0 20 20" fill="currentColor" className="check-icon">
     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -222,7 +278,7 @@ const HomePage = () => {
             <MysteryIcon />
           </div>
           <div className="mystery-card__content">
-            <span className="mystery-badge">EXPLORE</span>
+            <span className="mystery-badge">STUDENT</span>
             <h3>The Mystery Map Challenge</h3>
             <p>
               Your teacher is looking for the next class map. Create yours and drop it in the 
@@ -241,10 +297,72 @@ const HomePage = () => {
         </div>
       </motion.div>
 
+      {/* Teacher Dashboard Section */}
+      <motion.div 
+        className="teacher-section"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.6 }}
+      >
+        <div className="teacher-card">
+          <div className="teacher-card__preview">
+            <TeacherIcon />
+          </div>
+          <div className="teacher-card__content">
+            <span className="teacher-badge">TEACHER</span>
+            <h3>Teacher Dashboard</h3>
+            <p>
+              Review and manage student map submissions. Approve maps, provide feedback,
+              and select the winning map for your class challenge.
+            </p>
+            <ul className="teacher-features">
+              <li>📋 View all student submissions</li>
+              <li>✅ Approve or request revisions</li>
+              <li>🏆 Select winning maps</li>
+              <li>📊 Track submission stats</li>
+            </ul>
+            <Link to="/teacher" className="test-button teacher-btn">
+              Open Dashboard
+            </Link>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Teacher Dashboard 2 Section */}
+      <motion.div 
+        className="teacher2-section"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.7 }}
+      >
+        <div className="teacher2-card">
+          <div className="teacher2-card__preview">
+            <Teacher2Icon />
+          </div>
+          <div className="teacher2-card__content">
+            <span className="teacher2-badge">NEW</span>
+            <h3>Teacher Dashboard 2</h3>
+            <p>
+              Bottom sheet map selection UI. Browse maps without losing sight of the join code.
+              Features carousel view, grid view, search, and sorting.
+            </p>
+            <ul className="teacher2-features">
+              <li>📱 Swipeable bottom sheet (peek/half/full)</li>
+              <li>📷 Carousel & grid view modes</li>
+              <li>🔍 Search and sort submissions</li>
+              <li>🎲 Random selection with preview</li>
+            </ul>
+            <Link to="/teacher2" className="test-button teacher2-btn">
+              Try Bottom Sheet UI
+            </Link>
+          </div>
+        </div>
+      </motion.div>
+
       <motion.footer
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.6 }}
+        transition={{ duration: 0.5, delay: 0.7 }}
       >
         <p>All versions optimized for low-grade Chromebooks</p>
         <p className="footer-sub">Enhanced features included: particles, sounds, animations</p>

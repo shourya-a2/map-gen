@@ -5,6 +5,8 @@ import LobbyScreen from './LobbyScreen';
 import LobbyScreenSideSheet from './LobbyScreenSideSheet';
 import CompetitionDemoPage from './pages/CompetitionDemoPage';
 import LobbyScreenMystery from './LobbyScreenMystery';
+import LobbyScreenTeacher from './LobbyScreenTeacher';
+import LobbyScreenTeacher2 from './LobbyScreenTeacher2';
 
 const App = () => {
   return (
@@ -14,6 +16,8 @@ const App = () => {
       <Route path="/side-sheet" element={<LobbyScreenSideSheet />} />
       <Route path="/competition" element={<CompetitionDemoPage />} />
       <Route path="/mystery" element={<LobbyScreenMystery />} />
+      <Route path="/teacher" element={<LobbyScreenTeacher />} />
+      <Route path="/teacher2" element={<LobbyScreenTeacher2 />} />
     </Routes>
   );
 };
