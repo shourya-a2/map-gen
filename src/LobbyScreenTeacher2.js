@@ -82,8 +82,8 @@ const LobbyScreenTeacher2 = () => {
 
   const scrollToIndex = (index) => {
     if (carouselRef.current) {
-      const cardWidth = 180;
-      const gap = 16;
+      const cardWidth = 220;
+      const gap = 24;
       const scrollPosition = index * (cardWidth + gap);
       carouselRef.current.scrollTo({ left: scrollPosition, behavior: 'smooth' });
     }

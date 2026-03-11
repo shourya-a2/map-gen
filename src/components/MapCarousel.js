@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './MapCarousel.css';
 
@@ -11,74 +11,57 @@ const MAP_IMAGES = [
 const MOCK_SUBMISSIONS = [
   { id: 1, studentName: 'Alex Chen', mapImage: MAP_IMAGES[0] },
   { id: 2, studentName: 'Sarah Miller', mapImage: MAP_IMAGES[1] },
-  { id: 3, studentName: 'Sarah Miller', mapImage: MAP_IMAGES[2] },
-  { id: 4, studentName: 'Sarah Miller', mapImage: MAP_IMAGES[0] },
+  { id: 3, studentName: 'Emma Davis', mapImage: MAP_IMAGES[2] },
+  { id: 4, studentName: 'James Wilson', mapImage: MAP_IMAGES[0] },
   { id: 5, studentName: 'Marcus Johnson', mapImage: MAP_IMAGES[1] },
-  { id: 6, studentName: 'Emma Davis', mapImage: MAP_IMAGES[2] },
-  { id: 7, studentName: 'Emma Davis', mapImage: MAP_IMAGES[0] },
-  { id: 8, studentName: 'James Wilson', mapImage: MAP_IMAGES[1] },
-  { id: 9, studentName: 'Olivia Brown', mapImage: MAP_IMAGES[2] },
-  { id: 10, studentName: 'Liam Garcia', mapImage: MAP_IMAGES[0] },
-  { id: 11, studentName: 'Liam Garcia', mapImage: MAP_IMAGES[1] },
-  { id: 12, studentName: 'Sophia Martinez', mapImage: MAP_IMAGES[2] },
-  { id: 13, studentName: 'Noah Anderson', mapImage: MAP_IMAGES[0] },
-  { id: 14, studentName: 'Isabella Thomas', mapImage: MAP_IMAGES[1] },
-  { id: 15, studentName: 'Ethan Jackson', mapImage: MAP_IMAGES[2] },
-  { id: 16, studentName: 'Ethan Jackson', mapImage: MAP_IMAGES[0] },
-  { id: 17, studentName: 'Ethan Jackson', mapImage: MAP_IMAGES[1] },
-  { id: 18, studentName: 'Mia White', mapImage: MAP_IMAGES[2] },
-  { id: 19, studentName: 'Aiden Harris', mapImage: MAP_IMAGES[0] },
-  { id: 20, studentName: 'Charlotte Clark', mapImage: MAP_IMAGES[1] },
-  { id: 21, studentName: 'Lucas Lewis', mapImage: MAP_IMAGES[2] },
-  { id: 22, studentName: 'Amelia Robinson', mapImage: MAP_IMAGES[0] },
-  { id: 23, studentName: 'Mason Walker', mapImage: MAP_IMAGES[1] },
-  { id: 24, studentName: 'Harper Young', mapImage: MAP_IMAGES[2] },
+  { id: 6, studentName: 'Olivia Brown', mapImage: MAP_IMAGES[2] },
+  { id: 7, studentName: 'Liam Garcia', mapImage: MAP_IMAGES[0] },
+  { id: 8, studentName: 'Sophia Martinez', mapImage: MAP_IMAGES[1] },
+  { id: 9, studentName: 'Noah Anderson', mapImage: MAP_IMAGES[2] },
+  { id: 10, studentName: 'Isabella Thomas', mapImage: MAP_IMAGES[0] },
+  { id: 11, studentName: 'Ethan Jackson', mapImage: MAP_IMAGES[1] },
+  { id: 12, studentName: 'Mia White', mapImage: MAP_IMAGES[2] },
 ];
 
 const MapCarousel = ({
   isVisible,
   onMapConfirmed,
+  onClose,
   currentWinner,
-  mapEnabled = true,
+  joinCode = '420042',
   initialSubmissions = MOCK_SUBMISSIONS
 }) => {
   const [submissions] = useState(initialSubmissions);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [selectedMapId, setSelectedMapId] = useState(currentWinner?.id || null);
   const [isRolling, setIsRolling] = useState(false);
   const rollIntervalRef = useRef(null);
 
-  const studentCounts = useMemo(() => {
-    const counts = {};
-    submissions.forEach(s => {
-      counts[s.studentName] = (counts[s.studentName] || 0) + 1;
-    });
-    return counts;
-  }, [submissions]);
-
-  const handleCardClick = (index) => {
-    if (isRolling) return;
-    
-    if (index === activeIndex) {
-      const submission = submissions[index];
-      setSelectedMapId(prev => prev === submission.id ? null : submission.id);
-    } else {
-      setActiveIndex(index);
+  const getVisibleMaps = () => {
+    const maps = [];
+    for (let i = -2; i <= 2; i++) {
+      let idx = activeIndex + i;
+      if (idx < 0) idx = submissions.length + idx;
+      if (idx >= submissions.length) idx = idx % submissions.length;
+      maps.push({ ...submissions[idx], position: i });
     }
+    return maps;
   };
 
-  const handleConfirmSelection = () => {
-    const selectedMap = submissions.find(s => s.id === selectedMapId);
-    if (selectedMap && onMapConfirmed) {
-      onMapConfirmed(selectedMap);
-    }
+  const navigateCarousel = (direction) => {
+    if (isRolling) return;
+    setActiveIndex(prev => {
+      if (direction === 'left') {
+        return prev > 0 ? prev - 1 : submissions.length - 1;
+      } else {
+        return prev < submissions.length - 1 ? prev + 1 : 0;
+      }
+    });
   };
 
   const handleRandomPick = () => {
     if (isRolling) return;
     
     setIsRolling(true);
-    setSelectedMapId(null);
     
     let iterations = 0;
     const maxIterations = 20;
@@ -95,7 +78,6 @@ const MapCarousel = ({
       } else {
         const finalIndex = Math.floor(Math.random() * submissions.length);
         setActiveIndex(finalIndex);
-        setSelectedMapId(submissions[finalIndex].id);
         setIsRolling(false);
       }
     };
@@ -103,15 +85,10 @@ const MapCarousel = ({
     roll();
   };
 
-  const navigateCarousel = (direction) => {
-    if (isRolling) return;
-    setActiveIndex(prev => {
-      if (direction === 'left') {
-        return prev > 0 ? prev - 1 : submissions.length - 1;
-      } else {
-        return prev < submissions.length - 1 ? prev + 1 : 0;
-      }
-    });
+  const handleConfirm = () => {
+    if (onMapConfirmed) {
+      onMapConfirmed(submissions[activeIndex]);
+    }
   };
 
   useEffect(() => {
@@ -127,125 +104,141 @@ const MapCarousel = ({
       const index = submissions.findIndex(s => s.id === currentWinner.id);
       if (index !== -1) {
         setActiveIndex(index);
-        setSelectedMapId(currentWinner.id);
       }
     }
   }, [currentWinner, submissions]);
 
-  const selectedMap = submissions.find(s => s.id === selectedMapId);
-
-  const getVisibleIndices = () => {
-    const indices = [];
-    for (let i = -2; i <= 2; i++) {
-      let idx = activeIndex + i;
-      if (idx < 0) idx = submissions.length + idx;
-      if (idx >= submissions.length) idx = idx % submissions.length;
-      indices.push({ realIndex: idx, position: i });
-    }
-    return indices;
-  };
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!isVisible) return;
+      if (e.key === 'ArrowLeft') navigateCarousel('left');
+      if (e.key === 'ArrowRight') navigateCarousel('right');
+      if (e.key === 'Escape' && onClose) onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isVisible, onClose]);
 
   if (!isVisible) return null;
 
+  const visibleMaps = getVisibleMaps();
+  const currentMap = submissions[activeIndex];
+
   return (
     <motion.div
-      className="map-carousel"
-      initial={{ y: 100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      exit={{ y: 100, opacity: 0 }}
-      transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+      className="map-overlay"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
     >
-      <div className="map-carousel__row">
+      {/* Join Code - Top Left */}
+      <div className="map-overlay__join-code">
+        <span className="map-overlay__join-label">JOIN CODE</span>
+        <span className="map-overlay__join-value">{joinCode}</span>
+      </div>
+
+      {/* Close button */}
+      <button className="map-overlay__close" onClick={onClose}>
+        ✕
+      </button>
+
+      {/* Header */}
+      <div className="map-overlay__header">
+        <h2 className="map-overlay__title">🗺️ Select a Map</h2>
+        <div className="map-overlay__counter">
+          {activeIndex + 1} of {submissions.length}
+        </div>
+      </div>
+
+      {/* Carousel */}
+      <div className="map-overlay__carousel">
         <button 
-          className="map-carousel__arrow"
+          className="map-overlay__arrow map-overlay__arrow--left"
           onClick={() => navigateCarousel('left')}
+          disabled={isRolling}
         >
-          ◀
+          ‹
         </button>
 
-        <div className="map-carousel__track">
-          {getVisibleIndices().map(({ realIndex, position }) => {
-            const submission = submissions[realIndex];
-            const isCenter = position === 0;
-            const isSelected = selectedMapId === submission.id && isCenter;
-            const isLowActivity = studentCounts[submission.studentName] === 1;
-            const absPosition = Math.abs(position);
-
-            return (
-              <motion.div
-                key={`card-${position}`}
-                className={`map-carousel__card ${isCenter ? 'center' : 'side'} ${isSelected ? 'selected' : ''}`}
-                data-position={position}
-                onClick={() => handleCardClick(realIndex)}
-                layout
-                initial={false}
-                animate={{
-                  opacity: isCenter ? 1 : 0.25,
-                  scale: isCenter ? 1 : (absPosition === 1 ? 0.85 : 0.7),
-                }}
-                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              >
-                {isLowActivity && isCenter && (
-                  <div className="map-carousel__badge">1st</div>
-                )}
-                <p className="map-carousel__name">{submission.studentName}</p>
-                <div className="map-carousel__preview">
-                  <img 
-                    src={submission.mapImage} 
-                    alt={`${submission.studentName}'s map`}
-                    className="map-carousel__image"
-                  />
-                </div>
-                {isSelected && (
-                  <motion.div 
-                    className="map-carousel__check"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                  >
-                    ✓
-                  </motion.div>
-                )}
-              </motion.div>
-            );
-          })}
+        <div className="map-overlay__track">
+          <AnimatePresence mode="popLayout">
+            {visibleMaps.map((map) => {
+              const isCenter = map.position === 0;
+              const absPos = Math.abs(map.position);
+              
+              return (
+                <motion.div
+                  key={`${map.id}-${map.position}`}
+                  className={`map-overlay__card ${isCenter ? 'center' : 'side'}`}
+                  data-position={map.position}
+                  layout
+                  initial={{ 
+                    opacity: 0,
+                    scale: 0.8,
+                    x: map.position * 50
+                  }}
+                  animate={{ 
+                    opacity: isCenter ? 1 : (absPos === 1 ? 0.5 : 0.25),
+                    scale: isCenter ? 1 : (absPos === 1 ? 0.75 : 0.55),
+                    x: 0,
+                    zIndex: isCenter ? 10 : (5 - absPos)
+                  }}
+                  exit={{ 
+                    opacity: 0,
+                    scale: 0.8
+                  }}
+                  transition={{ 
+                    type: 'spring', 
+                    stiffness: 300, 
+                    damping: 30 
+                  }}
+                  onClick={() => {
+                    if (!isCenter && !isRolling) {
+                      navigateCarousel(map.position > 0 ? 'right' : 'left');
+                    }
+                  }}
+                >
+                  <div className="map-overlay__card-name">
+                    {map.studentName}
+                  </div>
+                  <div className="map-overlay__card-preview">
+                    <img 
+                      src={map.mapImage} 
+                      alt={`${map.studentName}'s map`}
+                    />
+                  </div>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
         </div>
 
         <button 
-          className="map-carousel__arrow"
+          className="map-overlay__arrow map-overlay__arrow--right"
           onClick={() => navigateCarousel('right')}
+          disabled={isRolling}
         >
-          ▶
+          ›
         </button>
       </div>
 
-      <div className="map-carousel__actions">
-        <motion.button
-          className={`map-carousel__btn map-carousel__btn--random ${isRolling ? 'rolling' : ''}`}
+      {/* Actions */}
+      <div className="map-overlay__actions">
+        <button 
+          className={`map-overlay__btn map-overlay__btn--random ${isRolling ? 'rolling' : ''}`}
           onClick={handleRandomPick}
           disabled={isRolling}
-          whileHover={!isRolling ? { scale: 1.05 } : {}}
-          whileTap={!isRolling ? { scale: 0.95 } : {}}
         >
-          <span>🎲</span>
-          <span>{isRolling ? 'Picking...' : 'Random'}</span>
-        </motion.button>
-
-        <AnimatePresence>
-          {selectedMapId && (
-            <motion.button
-              className="map-carousel__btn map-carousel__btn--confirm"
-              onClick={handleConfirmSelection}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span>✓</span>
-              <span>Confirm {selectedMap?.studentName}</span>
-            </motion.button>
-          )}
-        </AnimatePresence>
+          🎲 {isRolling ? 'Picking...' : 'Random Pick'}
+        </button>
+        <button 
+          className="map-overlay__btn map-overlay__btn--confirm"
+          onClick={handleConfirm}
+          disabled={isRolling}
+        >
+          ✓ Select This Map
+        </button>
       </div>
     </motion.div>
   );

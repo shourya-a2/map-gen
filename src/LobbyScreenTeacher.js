@@ -122,8 +122,9 @@ const LobbyScreenTeacher = () => {
           <MapCarousel
             isVisible={isCarouselVisible}
             onMapConfirmed={handleMapConfirmed}
+            onClose={() => setIsCarouselVisible(false)}
             currentWinner={winnerMap}
-            mapEnabled={mapEnabledForKids}
+            joinCode="420042"
           />
         )}
       </AnimatePresence>

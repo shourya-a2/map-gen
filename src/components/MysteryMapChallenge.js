@@ -475,14 +475,11 @@ const MysteryMapChallenge = ({
                           className={`aura-btn-primary ${canGenerate ? '' : 'disabled'}`}
                           onClick={handleGenerate}
                           disabled={!canGenerate}
-                          whileHover={canGenerate ? { y: -2 } : {}}
-                          whileTap={canGenerate ? { y: 0 } : {}}
+                          whileHover={canGenerate ? { scale: 1.02 } : {}}
+                          whileTap={canGenerate ? { scale: 0.98 } : {}}
                           transition={springTransition}
                         >
-                          <span className="aura-btn-primary__glow" />
-                          <span className="aura-btn-primary__face">
-                            GENERATE MAP
-                          </span>
+                          GENERATE MAP
                         </motion.button>
                         {!canGenerate && (
                           <p className="aura-hint--requirement">
@@ -606,14 +603,11 @@ const MysteryMapChallenge = ({
                             <motion.button
                               className="aura-btn-primary"
                               onClick={() => handleSubmit()}
-                              whileHover={{ y: -2 }}
-                              whileTap={{ y: 0 }}
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
                               transition={springTransition}
                             >
-                              <span className="aura-btn-primary__glow" />
-                              <span className="aura-btn-primary__face">
-                                Send to Teacher
-                              </span>
+                              SEND TO TEACHER
                             </motion.button>
                             <motion.button
                               className={`aura-btn-secondary ${generationsLeft <= 0 || coins < GENERATION_COST ? 'disabled' : ''}`}
@@ -694,14 +688,11 @@ const MysteryMapChallenge = ({
                     <motion.button
                       className="aura-btn-primary aura-mymaps-empty__cta"
                       onClick={() => setActiveTab('create')}
-                      whileHover={{ y: -2 }}
-                      whileTap={{ y: 0 }}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                       transition={springTransition}
                     >
-                      <span className="aura-btn-primary__glow" />
-                      <span className="aura-btn-primary__face">
-                        CREATE YOUR FIRST MAP
-                      </span>
+                      CREATE YOUR FIRST MAP
                     </motion.button>
                   </div>
                 ) : (

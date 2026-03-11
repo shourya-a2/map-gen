@@ -239,7 +239,7 @@ const TeacherDashboard = ({
                     </motion.div>
                     <div className="teacher-confirm-view__actions">
                       <motion.button
-                        className="teacher-confirm-btn teacher-confirm-btn--back"
+                        className="teacher-confirm-btn--back"
                         onClick={handleBackToSelection}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
@@ -249,10 +249,11 @@ const TeacherDashboard = ({
                       <motion.button
                         className="teacher-confirm-btn teacher-confirm-btn--confirm"
                         onClick={handleConfirmSelection}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                        whileHover={{ y: -2 }}
+                        whileTap={{ y: 0 }}
                       >
-                        ✓ Confirm
+                        <span className="teacher-confirm-btn__glow" />
+                        <span className="teacher-confirm-btn__face">✓ Confirm</span>
                       </motion.button>
                     </div>
                   </motion.div>
@@ -322,11 +323,14 @@ const TeacherDashboard = ({
                         className={`teacher-random-btn ${isRolling ? 'rolling' : ''}`}
                         onClick={handleRandomPick}
                         disabled={isRolling}
-                        whileHover={!isRolling ? { scale: 1.05 } : {}}
-                        whileTap={!isRolling ? { scale: 0.95 } : {}}
+                        whileHover={!isRolling ? { y: -2 } : {}}
+                        whileTap={!isRolling ? { y: 0 } : {}}
                       >
-                        <span>🎲</span>
-                        <span>{isRolling ? 'Picking...' : 'Random'}</span>
+                        <span className="teacher-random-btn__glow" />
+                        <span className="teacher-random-btn__face">
+                          <span>🎲</span>
+                          <span>{isRolling ? 'Picking...' : 'Random'}</span>
+                        </span>
                       </motion.button>
                     </div>
 
