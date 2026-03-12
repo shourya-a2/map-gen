@@ -8,6 +8,7 @@ import HeroVideo from '../assets/Animated_Game_Background_Video_Loop.mp4';
 const MAX_CHARS = 150;
 const GENERATION_COST = 50;
 const MAX_GENERATIONS = 3;
+const PREMIUM_THRESHOLD = 10000;
 const PIXEL_GRID_SIZE = 8;
 const TOTAL_PIXELS = PIXEL_GRID_SIZE * PIXEL_GRID_SIZE;
 
@@ -197,6 +198,9 @@ const MysteryMapChallenge = ({
   }, []);
 
   const canGenerate = prompt.trim().length > 0 && generationsLeft > 0 && coins >= GENERATION_COST;
+  const isPremiumUser = coins >= PREMIUM_THRESHOLD;
+  const coinsToUnlock = Math.max(0, PREMIUM_THRESHOLD - coins);
+  const unlockProgress = Math.min(100, (coins / PREMIUM_THRESHOLD) * 100);
 
   const handlePromptChange = useCallback((e) => {
     const value = e.target.value;
@@ -302,6 +306,17 @@ const MysteryMapChallenge = ({
     setCreatorPhase('idle');
   }, []);
 
+  const handleSaveAsDraft = useCallback(() => {
+    if (!currentMapData) return;
+    const draftMap = { ...currentMapData, submitted: false, isDraft: true };
+    setMyMaps(prev => [draftMap, ...prev]);
+    setCreatorPhase('idle');
+    setPrompt('');
+    setCurrentMapData(null);
+    setRevealedPixels([]);
+    setActiveTab('mymaps');
+  }, [currentMapData]);
+
   const handleClose = useCallback(() => {
     if (forgeIntervalRef.current) {
       clearInterval(forgeIntervalRef.current);
@@ -322,6 +337,20 @@ const MysteryMapChallenge = ({
         transition={{ duration: 0.3 }}
         onClick={handleClose}
       />
+
+      {/* Close button - floating outside sheet */}
+      <motion.button
+        className="aura-close aura-close--floating"
+        onClick={handleClose}
+        initial={{ x: '-100%', opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        exit={{ x: '-100%', opacity: 0 }}
+        transition={sheetSpring}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        ✕
+      </motion.button>
 
       <motion.div
         className="aura-sheet"
@@ -385,14 +414,6 @@ const MysteryMapChallenge = ({
             <div className="aura-economy">
               <span className="aura-coins">🪙 {coins.toLocaleString()}</span>
             </div>
-            <motion.button
-              className="aura-close"
-              onClick={handleClose}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              ✕
-            </motion.button>
           </div>
         </div>
 
@@ -554,6 +575,27 @@ const MysteryMapChallenge = ({
                             </motion.div>
                           )}
                         </AnimatePresence>
+
+                        {/* Lock overlay for teaser users when map is complete */}
+                        {creatorPhase === 'complete' && !isPremiumUser && (
+                          <motion.div
+                            className="aura-map-lock-overlay"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.3 }}
+                          >
+                            <div className="aura-map-lock-overlay__content">
+                              <motion.span
+                                className="aura-map-lock-overlay__icon"
+                                animate={{ scale: [1, 1.1, 1] }}
+                                transition={{ duration: 2, repeat: Infinity }}
+                              >
+                                🔒
+                              </motion.span>
+                              <span className="aura-map-lock-overlay__text">Preview Only</span>
+                            </div>
+                          </motion.div>
+                        )}
                       </div>
 
                       {/* Below the frame: progress during forging, buttons on complete */}
@@ -600,15 +642,48 @@ const MysteryMapChallenge = ({
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.4, delay: 0.3 }}
                           >
-                            <motion.button
-                              className="aura-btn-primary"
-                              onClick={() => handleSubmit()}
-                              whileHover={{ scale: 1.02 }}
-                              whileTap={{ scale: 0.98 }}
-                              transition={springTransition}
-                            >
-                              SEND TO TEACHER
-                            </motion.button>
+                            {isPremiumUser ? (
+                              <motion.button
+                                className="aura-btn-primary"
+                                onClick={() => handleSubmit()}
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                transition={springTransition}
+                              >
+                                SEND TO TEACHER
+                              </motion.button>
+                            ) : (
+                              <div className="aura-locked-submit">
+                                <div className="aura-locked-submit__header">
+                                  <span className="aura-locked-submit__icon">🔒</span>
+                                  <span className="aura-locked-submit__title">Unlock to Submit</span>
+                                </div>
+                                <div className="aura-locked-submit__progress">
+                                  <div className="aura-locked-submit__bar">
+                                    <motion.div 
+                                      className="aura-locked-submit__fill"
+                                      initial={{ width: 0 }}
+                                      animate={{ width: `${unlockProgress}%` }}
+                                      transition={{ duration: 1, ease: "easeOut" }}
+                                    />
+                                  </div>
+                                  <span className="aura-locked-submit__count">
+                                    🪙 {coins.toLocaleString()} / {PREMIUM_THRESHOLD.toLocaleString()}
+                                  </span>
+                                </div>
+                                <p className="aura-locked-submit__hint">
+                                  Earn {coinsToUnlock.toLocaleString()} more coins to submit!
+                                </p>
+                                <motion.button
+                                  className="aura-locked-submit__save"
+                                  onClick={handleSaveAsDraft}
+                                  whileHover={{ scale: 1.02 }}
+                                  whileTap={{ scale: 0.98 }}
+                                >
+                                  💾 SAVE AS DRAFT
+                                </motion.button>
+                              </div>
+                            )}
                             <motion.button
                               className={`aura-btn-secondary ${generationsLeft <= 0 || coins < GENERATION_COST ? 'disabled' : ''}`}
                               onClick={handleRegenerate}
@@ -723,23 +798,31 @@ const MysteryMapChallenge = ({
                           </div>
                           <div className="aura-map-card__actions">
                             {!map.submitted ? (
-                              <motion.button
-                                className="aura-map-card__submit"
-                                onClick={() => handleSubmit(map)}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                              >
-                                SUBMIT
-                              </motion.button>
+                              isPremiumUser ? (
+                                <motion.button
+                                  className="aura-map-card__submit"
+                                  onClick={() => handleSubmit(map)}
+                                  whileHover={{ scale: 1.05 }}
+                                  whileTap={{ scale: 0.95 }}
+                                >
+                                  SUBMIT
+                                </motion.button>
+                              ) : (
+                                <span className="aura-map-card__draft">🔒 DRAFT</span>
+                              )
                             ) : (
-                              <motion.button
-                                className="aura-map-card__submit resubmit"
-                                onClick={() => handleResubmit(map)}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                              >
-                                RESUBMIT
-                              </motion.button>
+                              isPremiumUser ? (
+                                <motion.button
+                                  className="aura-map-card__submit resubmit"
+                                  onClick={() => handleResubmit(map)}
+                                  whileHover={{ scale: 1.05 }}
+                                  whileTap={{ scale: 0.95 }}
+                                >
+                                  RESUBMIT
+                                </motion.button>
+                              ) : (
+                                <span className="aura-map-card__status">✓ SUBMITTED</span>
+                              )
                             )}
                             <motion.button
                               className="aura-map-card__delete"

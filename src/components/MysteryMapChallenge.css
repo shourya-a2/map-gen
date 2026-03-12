@@ -169,6 +169,14 @@
   transform: scale(0.95);
 }
 
+.aura-close--floating {
+  position: fixed;
+  top: 16px;
+  left: calc(min(401px, 100vw) + 8px);
+  z-index: 1001;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
 /* ═══════════════════════════════════════════
    TABS — Aura Pill Style
    ═══════════════════════════════════════════ */
@@ -557,6 +565,134 @@
   border-color: rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.25);
   cursor: not-allowed;
+}
+
+/* ═══════════════════════════════════════════
+   LOCKED SUBMIT — Teaser Mode UI
+   ═══════════════════════════════════════════ */
+.aura-locked-submit {
+  width: 100%;
+  padding: 16px 20px;
+  background: linear-gradient(145deg, rgba(40, 20, 10, 0.9), rgba(60, 30, 15, 0.8));
+  border: 2px solid rgba(254, 199, 57, 0.3);
+  border-radius: 12px;
+  text-align: center;
+  animation: lockedPulse 3s ease-in-out infinite;
+}
+
+@keyframes lockedPulse {
+  0%, 100% { border-color: rgba(254, 199, 57, 0.3); box-shadow: 0 0 15px rgba(254, 199, 57, 0.1); }
+  50% { border-color: rgba(254, 199, 57, 0.6); box-shadow: 0 0 25px rgba(254, 199, 57, 0.2); }
+}
+
+.aura-locked-submit__header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.aura-locked-submit__icon {
+  font-size: 20px;
+}
+
+.aura-locked-submit__title {
+  font-family: var(--aura-font-pixel);
+  font-size: 12px;
+  color: var(--warm-gold-500);
+  letter-spacing: 1px;
+}
+
+.aura-locked-submit__progress {
+  margin-bottom: 10px;
+}
+
+.aura-locked-submit__bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.aura-locked-submit__fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--warm-gold-500), var(--warm-btn-yellow));
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(254, 199, 57, 0.5);
+}
+
+.aura-locked-submit__count {
+  font-family: var(--aura-font-mono);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.aura-locked-submit__hint {
+  font-family: var(--aura-font-mono);
+  font-size: 11px;
+  color: var(--warm-gold-100);
+  margin: 0 0 12px 0;
+}
+
+.aura-locked-submit__save {
+  width: 100%;
+  padding: 10px 16px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  font-family: var(--aura-font-pixel);
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.aura-locked-submit__save:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: white;
+}
+
+/* ═══════════════════════════════════════════
+   MAP LOCK OVERLAY — Teaser Preview
+   ═══════════════════════════════════════════ */
+.aura-map-lock-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  backdrop-filter: blur(2px);
+}
+
+.aura-map-lock-overlay__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 24px;
+  background: rgba(40, 20, 10, 0.9);
+  border: 2px solid rgba(254, 199, 57, 0.5);
+  border-radius: 12px;
+}
+
+.aura-map-lock-overlay__icon {
+  font-size: 32px;
+  filter: drop-shadow(0 0 10px rgba(254, 199, 57, 0.5));
+}
+
+.aura-map-lock-overlay__text {
+  font-family: var(--aura-font-pixel);
+  font-size: 10px;
+  color: var(--warm-gold-500);
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 /* ═══════════════════════════════════════════
@@ -1124,6 +1260,17 @@
 .aura-map-card__submit.resubmit:hover {
   background: rgba(157, 78, 221, 0.2);
   box-shadow: 0 0 15px rgba(157, 78, 221, 0.3);
+}
+
+.aura-map-card__draft {
+  padding: 8px 12px;
+  background: rgba(100, 100, 100, 0.2);
+  border: 1px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  font-family: var(--aura-font-pixel);
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.5px;
 }
 
 .aura-map-card__delete {

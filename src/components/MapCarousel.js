@@ -9,18 +9,30 @@ const MAP_IMAGES = [
 ];
 
 const MOCK_SUBMISSIONS = [
-  { id: 1, studentName: 'Alex Chen', mapImage: MAP_IMAGES[0] },
-  { id: 2, studentName: 'Sarah Miller', mapImage: MAP_IMAGES[1] },
-  { id: 3, studentName: 'Emma Davis', mapImage: MAP_IMAGES[2] },
-  { id: 4, studentName: 'James Wilson', mapImage: MAP_IMAGES[0] },
-  { id: 5, studentName: 'Marcus Johnson', mapImage: MAP_IMAGES[1] },
-  { id: 6, studentName: 'Olivia Brown', mapImage: MAP_IMAGES[2] },
-  { id: 7, studentName: 'Liam Garcia', mapImage: MAP_IMAGES[0] },
-  { id: 8, studentName: 'Sophia Martinez', mapImage: MAP_IMAGES[1] },
-  { id: 9, studentName: 'Noah Anderson', mapImage: MAP_IMAGES[2] },
-  { id: 10, studentName: 'Isabella Thomas', mapImage: MAP_IMAGES[0] },
-  { id: 11, studentName: 'Ethan Jackson', mapImage: MAP_IMAGES[1] },
-  { id: 12, studentName: 'Mia White', mapImage: MAP_IMAGES[2] },
+  { id: 1, studentName: 'Alex Chen', mapTitle: 'Volcanic Island', mapImage: MAP_IMAGES[0] },
+  { id: 2, studentName: 'Sarah Miller', mapTitle: 'Lava Fortress', mapImage: MAP_IMAGES[1] },
+  { id: 3, studentName: 'Emma Davis', mapTitle: 'Crystal Caverns', mapImage: MAP_IMAGES[2] },
+  { id: 4, studentName: 'James Wilson', mapTitle: 'Shadow Realm', mapImage: MAP_IMAGES[0] },
+  { id: 5, studentName: 'Marcus Johnson', mapTitle: 'Inferno Peak', mapImage: MAP_IMAGES[1] },
+  { id: 6, studentName: 'Olivia Brown', mapTitle: 'Frozen Tundra', mapImage: MAP_IMAGES[2] },
+  { id: 7, studentName: 'Liam Garcia', mapTitle: 'Forest Gum', mapImage: MAP_IMAGES[0] },
+  { id: 8, studentName: 'Sophia Martinez', mapTitle: 'Magma Maze', mapImage: MAP_IMAGES[1] },
+  { id: 9, studentName: 'Noah Anderson', mapTitle: 'Diamond Den', mapImage: MAP_IMAGES[2] },
+  { id: 10, studentName: 'Isabella Thomas', mapTitle: 'Mystic Garden', mapImage: MAP_IMAGES[0] },
+  { id: 11, studentName: 'Ethan Jackson', mapTitle: 'Fire Mountain', mapImage: MAP_IMAGES[1] },
+  { id: 12, studentName: 'Mia White', mapTitle: 'Ice Palace', mapImage: MAP_IMAGES[2] },
+  { id: 13, studentName: 'Lucas Brown', mapTitle: 'Enchanted Woods', mapImage: MAP_IMAGES[0] },
+  { id: 14, studentName: 'Ava Taylor', mapTitle: 'Burning Sands', mapImage: MAP_IMAGES[1] },
+  { id: 15, studentName: 'Mason Lee', mapTitle: 'Starlight Cave', mapImage: MAP_IMAGES[2] },
+  { id: 16, studentName: 'Charlotte Harris', mapTitle: 'Neon City', mapImage: MAP_IMAGES[0] },
+  { id: 17, studentName: 'Logan Clark', mapTitle: 'Molten Core', mapImage: MAP_IMAGES[1] },
+  { id: 18, studentName: 'Amelia Lewis', mapTitle: 'Aurora Falls', mapImage: MAP_IMAGES[2] },
+  { id: 19, studentName: 'Oliver Walker', mapTitle: 'Jungle Temple', mapImage: MAP_IMAGES[0] },
+  { id: 20, studentName: 'Harper Hall', mapTitle: 'Dragon Lair', mapImage: MAP_IMAGES[1] },
+  { id: 21, studentName: 'Elijah Young', mapTitle: 'Gem Grotto', mapImage: MAP_IMAGES[2] },
+  { id: 22, studentName: 'Evelyn King', mapTitle: 'Twilight Zone', mapImage: MAP_IMAGES[0] },
+  { id: 23, studentName: 'William Wright', mapTitle: 'Ember Valley', mapImage: MAP_IMAGES[1] },
+  { id: 24, studentName: 'Abigail Scott', mapTitle: 'Prism Peak', mapImage: MAP_IMAGES[2] },
 ];
 
 const MapCarousel = ({
@@ -32,30 +44,14 @@ const MapCarousel = ({
   initialSubmissions = MOCK_SUBMISSIONS
 }) => {
   const [submissions] = useState(initialSubmissions);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [selectedMapId, setSelectedMapId] = useState(null);
   const [isRolling, setIsRolling] = useState(false);
   const rollIntervalRef = useRef(null);
+  const gridRef = useRef(null);
 
-  const getVisibleMaps = () => {
-    const maps = [];
-    for (let i = -2; i <= 2; i++) {
-      let idx = activeIndex + i;
-      if (idx < 0) idx = submissions.length + idx;
-      if (idx >= submissions.length) idx = idx % submissions.length;
-      maps.push({ ...submissions[idx], position: i });
-    }
-    return maps;
-  };
-
-  const navigateCarousel = (direction) => {
+  const handleMapClick = (map) => {
     if (isRolling) return;
-    setActiveIndex(prev => {
-      if (direction === 'left') {
-        return prev > 0 ? prev - 1 : submissions.length - 1;
-      } else {
-        return prev < submissions.length - 1 ? prev + 1 : 0;
-      }
-    });
+    setSelectedMapId(map.id);
   };
 
   const handleRandomPick = () => {
@@ -69,7 +65,7 @@ const MapCarousel = ({
     
     const roll = () => {
       const randomIndex = Math.floor(Math.random() * submissions.length);
-      setActiveIndex(randomIndex);
+      setSelectedMapId(submissions[randomIndex].id);
       iterations++;
       
       if (iterations < maxIterations) {
@@ -77,8 +73,17 @@ const MapCarousel = ({
         rollIntervalRef.current = setTimeout(roll, delay);
       } else {
         const finalIndex = Math.floor(Math.random() * submissions.length);
-        setActiveIndex(finalIndex);
+        const finalMap = submissions[finalIndex];
+        setSelectedMapId(finalMap.id);
         setIsRolling(false);
+        
+        // Scroll the selected map into view
+        if (gridRef.current) {
+          const selectedCard = gridRef.current.querySelector(`[data-map-id="${finalMap.id}"]`);
+          if (selectedCard) {
+            selectedCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }
       }
     };
     
@@ -86,8 +91,9 @@ const MapCarousel = ({
   };
 
   const handleConfirm = () => {
-    if (onMapConfirmed) {
-      onMapConfirmed(submissions[activeIndex]);
+    const selectedMap = submissions.find(s => s.id === selectedMapId);
+    if (selectedMap && onMapConfirmed) {
+      onMapConfirmed(selectedMap);
     }
   };
 
@@ -101,18 +107,13 @@ const MapCarousel = ({
 
   useEffect(() => {
     if (currentWinner?.id) {
-      const index = submissions.findIndex(s => s.id === currentWinner.id);
-      if (index !== -1) {
-        setActiveIndex(index);
-      }
+      setSelectedMapId(currentWinner.id);
     }
-  }, [currentWinner, submissions]);
+  }, [currentWinner]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (!isVisible) return;
-      if (e.key === 'ArrowLeft') navigateCarousel('left');
-      if (e.key === 'ArrowRight') navigateCarousel('right');
       if (e.key === 'Escape' && onClose) onClose();
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -121,8 +122,7 @@ const MapCarousel = ({
 
   if (!isVisible) return null;
 
-  const visibleMaps = getVisibleMaps();
-  const currentMap = submissions[activeIndex];
+  const selectedMap = submissions.find(s => s.id === selectedMapId);
 
   return (
     <motion.div
@@ -147,80 +147,49 @@ const MapCarousel = ({
       <div className="map-overlay__header">
         <h2 className="map-overlay__title">🗺️ Select a Map</h2>
         <div className="map-overlay__counter">
-          {activeIndex + 1} of {submissions.length}
+          {submissions.length} maps submitted
         </div>
       </div>
 
-      {/* Carousel */}
-      <div className="map-overlay__carousel">
-        <button 
-          className="map-overlay__arrow map-overlay__arrow--left"
-          onClick={() => navigateCarousel('left')}
-          disabled={isRolling}
-        >
-          ‹
-        </button>
-
-        <div className="map-overlay__track">
-          <AnimatePresence mode="popLayout">
-            {visibleMaps.map((map) => {
-              const isCenter = map.position === 0;
-              const absPos = Math.abs(map.position);
-              
-              return (
-                <motion.div
-                  key={`${map.id}-${map.position}`}
-                  className={`map-overlay__card ${isCenter ? 'center' : 'side'}`}
-                  data-position={map.position}
-                  layout
-                  initial={{ 
-                    opacity: 0,
-                    scale: 0.8,
-                    x: map.position * 50
-                  }}
-                  animate={{ 
-                    opacity: isCenter ? 1 : (absPos === 1 ? 0.5 : 0.25),
-                    scale: isCenter ? 1 : (absPos === 1 ? 0.75 : 0.55),
-                    x: 0,
-                    zIndex: isCenter ? 10 : (5 - absPos)
-                  }}
-                  exit={{ 
-                    opacity: 0,
-                    scale: 0.8
-                  }}
-                  transition={{ 
-                    type: 'spring', 
-                    stiffness: 300, 
-                    damping: 30 
-                  }}
-                  onClick={() => {
-                    if (!isCenter && !isRolling) {
-                      navigateCarousel(map.position > 0 ? 'right' : 'left');
-                    }
-                  }}
+      {/* Grid */}
+      <div className="map-overlay__grid" ref={gridRef}>
+        {submissions.map((map) => {
+          const isSelected = selectedMapId === map.id;
+          
+          return (
+            <motion.div
+              key={map.id}
+              data-map-id={map.id}
+              className={`map-overlay__grid-card ${isSelected ? 'selected' : ''}`}
+              onClick={() => handleMapClick(map)}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              animate={isSelected ? { 
+                boxShadow: '0 0 30px rgba(254, 199, 57, 0.6)' 
+              } : {}}
+            >
+              <div className="map-overlay__grid-card-preview">
+                <img 
+                  src={map.mapImage} 
+                  alt={`${map.studentName}'s map`}
+                />
+              </div>
+              <div className="map-overlay__grid-card-info">
+                <span className="map-overlay__grid-card-title">{map.mapTitle}</span>
+                <span className="map-overlay__grid-card-author">by {map.studentName}</span>
+              </div>
+              {isSelected && (
+                <motion.div 
+                  className="map-overlay__grid-card-check"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
                 >
-                  <div className="map-overlay__card-name">
-                    {map.studentName}
-                  </div>
-                  <div className="map-overlay__card-preview">
-                    <img 
-                      src={map.mapImage} 
-                      alt={`${map.studentName}'s map`}
-                    />
-                  </div>
+                  ✓
                 </motion.div>
-              );
-            })}
-          </AnimatePresence>
-        </div>
-
-        <button 
-          className="map-overlay__arrow map-overlay__arrow--right"
-          onClick={() => navigateCarousel('right')}
-          disabled={isRolling}
-        >
-          ›
-        </button>
+              )}
+            </motion.div>
+          );
+        })}
       </div>
 
       {/* Actions */}
@@ -235,9 +204,9 @@ const MapCarousel = ({
         <button 
           className="map-overlay__btn map-overlay__btn--confirm"
           onClick={handleConfirm}
-          disabled={isRolling}
+          disabled={isRolling || !selectedMapId}
         >
-          ✓ Select This Map
+          ✓ {selectedMap ? `Select "${selectedMap.mapTitle}"` : 'Select a Map'}
         </button>
       </div>
     </motion.div>
