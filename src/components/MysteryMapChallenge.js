@@ -4,6 +4,7 @@ import './MysteryMapChallenge.css';
 
 import MockupMapImage from '../assets/mockup-map.png';
 import HeroVideo from '../assets/Animated_Game_Background_Video_Loop.mp4';
+import CoinIcon from '../assets/coin-icon.png';
 
 const MAX_CHARS = 150;
 const GENERATION_COST = 50;
@@ -412,7 +413,10 @@ const MysteryMapChallenge = ({
 
           <div className="aura-header__right">
             <div className="aura-economy">
-              <span className="aura-coins">🪙 {coins.toLocaleString()}</span>
+              <div className="aura-coins">
+                <img src={CoinIcon} alt="" className="aura-coins__icon" />
+                <span className="aura-coins__value">{coins.toLocaleString()}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -466,8 +470,9 @@ const MysteryMapChallenge = ({
                         <span className="aura-gen-badge--inline">
                           {generationsLeft}/{MAX_GENERATIONS} generates left
                         </span>
-                        <span className="aura-gen-badge--inline">
-                          🪙 {GENERATION_COST} per map
+                        <span className="aura-gen-badge--inline aura-gen-badge--coin">
+                          <img src={CoinIcon} alt="" className="aura-gen-badge__coin-icon" />
+                          {GENERATION_COST} per map
                         </span>
                       </div>
 
@@ -668,7 +673,8 @@ const MysteryMapChallenge = ({
                                     />
                                   </div>
                                   <span className="aura-locked-submit__count">
-                                    🪙 {coins.toLocaleString()} / {PREMIUM_THRESHOLD.toLocaleString()}
+                                    <img src={CoinIcon} alt="" className="aura-locked-submit__coin-icon" />
+                                    {coins.toLocaleString()} / {PREMIUM_THRESHOLD.toLocaleString()}
                                   </span>
                                 </div>
                                 <p className="aura-locked-submit__hint">

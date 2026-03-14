@@ -1,5 +1,8 @@
 /* LobbyScreenMystery.css - Maps Section UI */
 
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&display=swap');
+
 .mystery-lobby {
   min-height: 100vh;
   width: 100%;
@@ -25,15 +28,15 @@
 }
 
 .maps-section-title {
-  font-family: 'Press Start 2P', 'Orbitron', sans-serif;
+  font-family: 'Geist Mono', monospace;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   color: #fff;
   margin: 0;
   padding: 8px 12px;
   background: rgba(0, 0, 0, 0.6);
   border-radius: 6px;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
@@ -98,17 +101,18 @@
 }
 
 .map-card-title {
-  font-family: 'Press Start 2P', 'Orbitron', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
+  font-family: 'Geist Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
   color: #fff;
   margin: 0 0 4px 0;
   letter-spacing: 0.5px;
 }
 
 .map-card-desc {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 11px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
   color: rgba(255, 255, 255, 0.5);
   margin: 0;
 }
@@ -135,8 +139,8 @@
   padding: 2px 5px;
   background: linear-gradient(135deg, #66ffcc, #33cc99);
   border-radius: 3px;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 6px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 8px;
   font-weight: 700;
   color: #0a1a14;
   letter-spacing: 0.5px;
@@ -225,8 +229,8 @@
   padding: 0 4px;
   background: linear-gradient(135deg, #b464ff, #8844cc);
   border-radius: 9px;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 9px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 10px;
   font-weight: 700;
   color: #fff;
   display: flex;

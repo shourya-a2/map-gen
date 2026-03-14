@@ -134,10 +134,24 @@
 }
 
 .aura-coins {
-  font-family: var(--aura-font-pixel);
-  font-size: 11px;
-  color: var(--warm-gold-500);
-  text-shadow: 0 0 6px rgba(254, 199, 57, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  background: rgba(9, 9, 9, 0.8);
+  border-radius: 4px;
+}
+
+.aura-coins__icon {
+  width: 22px;
+  height: 24px;
+}
+
+.aura-coins__value {
+  font-family: 'Geist Mono', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
 }
 
 .aura-close {

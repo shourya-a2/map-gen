@@ -4,7 +4,7 @@ import './LobbyScreenTeacher.css';
 import MapCarousel from './components/MapCarousel';
 
 const LobbyScreenTeacher = () => {
-  const [isCarouselVisible, setIsCarouselVisible] = useState(true);
+  const [isCarouselVisible, setIsCarouselVisible] = useState(false);
   const [winnerMap, setWinnerMap] = useState(null);
   const [timer, setTimer] = useState(5 * 60);
   const [isSoundOn, setIsSoundOn] = useState(true);
@@ -23,8 +23,8 @@ const LobbyScreenTeacher = () => {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const toggleCarousel = useCallback(() => {
-    setIsCarouselVisible(prev => !prev);
+  const openCarousel = useCallback(() => {
+    setIsCarouselVisible(true);
   }, []);
 
   const handleMapConfirmed = useCallback((selectedMap) => {
@@ -47,18 +47,6 @@ const LobbyScreenTeacher = () => {
             <span className="teacher-navbar__timer-icon">⏱️</span>
             <span className="teacher-navbar__timer-value">{formatTime(timer)}</span>
           </div>
-        </div>
-
-        <div className="teacher-navbar__center">
-          <motion.button
-            className={`teacher-navbar__map-btn ${winnerMap ? 'has-winner' : ''} ${isCarouselVisible ? 'active' : ''}`}
-            onClick={toggleCarousel}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <span>🗺️</span>
-            <span>{isCarouselVisible ? 'Hide Maps' : (winnerMap ? 'Change Map' : 'Select Map')}</span>
-          </motion.button>
         </div>
 
         <div className="teacher-navbar__right">
@@ -85,36 +73,58 @@ const LobbyScreenTeacher = () => {
         </div>
       </nav>
 
-      <div className="teacher-lobby__content">
-        <AnimatePresence>
-          {winnerMap && (
-            <motion.div
-              className="teacher-lobby__winner"
-              initial={{ opacity: 0, scale: 0.8, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+      {/* Fixed position map action card - bottom left */}
+      <motion.div 
+        className={`map-action-card ${!winnerMap ? 'map-action-card--pulse' : 'map-action-card--selected'}`}
+        onClick={!winnerMap ? openCarousel : undefined}
+        whileHover={!winnerMap ? { scale: 1.03 } : {}}
+        whileTap={!winnerMap ? { scale: 0.97 } : {}}
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.3, delay: 0.2 }}
+        style={{ cursor: !winnerMap ? 'pointer' : 'default' }}
+      >
+        {!winnerMap ? (
+          <>
+            <div className="map-action-card__icon-wrapper">
+              <span className="map-action-card__icon">🗺️</span>
+            </div>
+            <div className="map-action-card__content">
+              <span className="map-action-card__label">SELECT MAP</span>
+              <span className="map-action-card__hint">Choose today's arena</span>
+            </div>
+            <span className="map-action-card__arrow">→</span>
+          </>
+        ) : (
+          <>
+            <div className="map-action-card__thumb-wrapper">
+              <img 
+                src={winnerMap.mapImage} 
+                alt={winnerMap.mapTitle}
+                className="map-action-card__thumb"
+              />
+            </div>
+            <div className="map-action-card__content">
+              <span className="map-action-card__label">TODAY'S MAP</span>
+              <span className="map-action-card__title">{winnerMap.mapTitle}</span>
+              <span className="map-action-card__author">by {winnerMap.studentName}</span>
+            </div>
+            <button 
+              className="map-action-card__change-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                openCarousel();
+              }}
             >
-              <div className="teacher-lobby__winner-badge">
-                <span className="teacher-lobby__winner-icon">🏆</span>
-                <span className="teacher-lobby__winner-label">WINNER</span>
-              </div>
-              <div className="teacher-lobby__winner-card">
-                <div className="teacher-lobby__winner-preview">
-                  <img 
-                    src={winnerMap.mapImage} 
-                    alt={`${winnerMap.studentName}'s map`}
-                    className="teacher-lobby__winner-image"
-                  />
-                </div>
-                <div className="teacher-lobby__winner-info">
-                  <span className="teacher-lobby__winner-name">{winnerMap.studentName}'s map</span>
-                  <span className="teacher-lobby__winner-check">✓</span>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              Change
+            </button>
+          </>
+        )}
+      </motion.div>
+
+      {/* Main content area - empty, no overlay */}
+      <div className="teacher-lobby__content">
+        {/* Content area is now clear for other elements */}
       </div>
 
       <AnimatePresence>
