@@ -214,7 +214,7 @@ const MapCarousel = ({
           >
             {/* Header */}
             <div className="map-overlay__header">
-              <h2 className="map-overlay__title">🗺️ Select a Map</h2>
+              <h2 className="map-overlay__title">Select a Map</h2>
               <div className="map-overlay__counter">
                 {submissions.length} maps submitted
               </div>
@@ -270,14 +270,14 @@ const MapCarousel = ({
                 onClick={handleRandomPick}
                 disabled={isRolling}
               >
-                🎲 {isRolling ? 'Picking...' : 'Random Pick'}
+                {isRolling ? 'Picking...' : '🎲 Random Pick'}
               </button>
               <button 
                 className="map-overlay__btn map-overlay__btn--confirm"
                 onClick={handleConfirm}
                 disabled={isRolling || !selectedMapId}
               >
-                ✓ {selectedMap ? `Select "${selectedMap.mapTitle}"` : 'Select a Map'}
+{selectedMap ? `Select "${selectedMap.mapTitle}"` : 'Select a Map'}
               </button>
             </div>
           </motion.div>
@@ -367,7 +367,7 @@ const MapCarousel = ({
                   className="celebration__btn celebration__btn--confirm"
                   onClick={handleUseThisMap}
                 >
-                  ✓ Use This Map
+Use This Map
                 </button>
                 <button 
                   className="celebration__back-link"

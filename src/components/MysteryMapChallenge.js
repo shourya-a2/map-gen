@@ -4,12 +4,10 @@ import './MysteryMapChallenge.css';
 
 import MockupMapImage from '../assets/mockup-map.png';
 import HeroVideo from '../assets/Animated_Game_Background_Video_Loop.mp4';
-import CoinIcon from '../assets/coin-icon.png';
+import CoinIcon from '../assets/coin-icon.svg';
 
 const MAX_CHARS = 150;
-const GENERATION_COST = 50;
-const MAX_GENERATIONS = 3;
-const PREMIUM_THRESHOLD = 10000;
+const MAP_GENERATION_COST = 10000;
 const PIXEL_GRID_SIZE = 8;
 const TOTAL_PIXELS = PIXEL_GRID_SIZE * PIXEL_GRID_SIZE;
 
@@ -29,12 +27,28 @@ const PLACEHOLDER_EXAMPLES = [
   'Frozen tundra with hidden caves',
 ];
 
-const FORGE_MESSAGES = [
-  'Summoning terrain...',
-  'Placing obstacles...',
-  'Adding secret paths...',
-  'Hiding treasures...',
-  'Finalizing layout...',
+const DRAWING_MESSAGES = [
+  'Charting coastlines...',
+  'Sketching mountains...',
+  'Tracing rivers...',
+  'Marking locations...',
+];
+
+const FRAGMENTING_MESSAGES = [
+  'Breaking down sketch...',
+  'Gathering essence...',
+];
+
+const COALESCING_MESSAGES = [
+  'Forming pixels...',
+  'Crystallizing map...',
+];
+
+const REVEAL_MESSAGES = [
+  'Revealing terrain...',
+  'Adding details...',
+  'Finalizing map...',
+  'Map complete!',
 ];
 
 const generatePixelColors = () => {
@@ -134,20 +148,188 @@ const playCompleteSound = (audioCtx) => {
   } catch (e) { /* Audio not supported */ }
 };
 
+const generateParticleStartPositions = () => {
+  const positions = [];
+  for (let i = 0; i < 64; i++) {
+    const angle = (i / 64) * Math.PI * 2;
+    const radius = 80 + Math.random() * 40;
+    positions.push({
+      x: Math.cos(angle) * radius,
+      y: Math.sin(angle) * radius,
+    });
+  }
+  return positions;
+};
+
+const PARTICLE_START_POSITIONS = generateParticleStartPositions();
+
+const BlueprintOverlay = ({ subPhase, message, pixelColors }) => {
+  const showLines = subPhase === 'drawing';
+  const showParticles = subPhase === 'fragmenting' || subPhase === 'coalescing';
+  const linesFading = subPhase === 'fragmenting';
+
+  return (
+    <motion.div 
+      className="blueprint-overlay"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className="blueprint-grid" />
+      
+      {/* Animated SVG elements - visible during drawing, fades during fragmenting */}
+      <AnimatePresence>
+        {(showLines || linesFading) && (
+          <motion.svg 
+            className={`blueprint-svg ${linesFading ? 'blueprint-svg--fading' : ''}`}
+            viewBox="0 0 200 200" 
+            preserveAspectRatio="xMidYMid slice"
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <path
+              className="blueprint-path blueprint-path--coastline"
+              d="M20,140 Q40,120 60,130 T100,125 T140,135 T180,120"
+              fill="none"
+              strokeWidth="2.5"
+            />
+            <path
+              className="blueprint-path blueprint-path--mountains"
+              d="M30,90 L50,50 L70,90 M80,90 L110,40 L140,90 M150,90 L170,60 L190,90"
+              fill="none"
+              strokeWidth="2.5"
+            />
+            <path
+              className="blueprint-path blueprint-path--river"
+              d="M100,50 Q95,70 100,90 Q105,110 100,130 Q95,150 100,170"
+              fill="none"
+              strokeWidth="2"
+            />
+            <circle className="blueprint-marker" cx="60" cy="100" r="5" />
+            <circle className="blueprint-marker" cx="140" cy="80" r="5" />
+            <circle className="blueprint-marker" cx="100" cy="150" r="5" />
+          </motion.svg>
+        )}
+      </AnimatePresence>
+      
+      {/* Compass rose - visible during drawing */}
+      <AnimatePresence>
+        {showLines && (
+          <motion.div 
+            className="blueprint-compass"
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+          >
+            <svg viewBox="0 0 60 60" className="blueprint-compass__svg">
+              <circle cx="30" cy="30" r="28" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.5" />
+              <circle cx="30" cy="30" r="20" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.3" />
+              <text x="30" y="10" textAnchor="middle" className="blueprint-compass__text">N</text>
+              <text x="30" y="56" textAnchor="middle" className="blueprint-compass__text">S</text>
+              <text x="6" y="34" textAnchor="middle" className="blueprint-compass__text">W</text>
+              <text x="54" y="34" textAnchor="middle" className="blueprint-compass__text">E</text>
+              <g className="blueprint-compass__needle">
+                <polygon points="30,8 33,30 30,35 27,30" fill="currentColor" opacity="0.8" />
+                <polygon points="30,52 33,30 30,25 27,30" fill="currentColor" opacity="0.4" />
+              </g>
+            </svg>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
+      {/* Scanning line */}
+      {showLines && <div className="blueprint-scanline" />}
+      
+      {/* Particle grid - appears during fragmenting, settles during coalescing */}
+      <AnimatePresence>
+        {showParticles && (
+          <motion.div 
+            className="particle-container"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="particle-grid">
+              {Array.from({ length: 64 }).map((_, index) => {
+                const startPos = PARTICLE_START_POSITIONS[index];
+                const particleColor = pixelColors[index] || '#1a1a2e';
+                return (
+                  <motion.div
+                    key={index}
+                    className={`particle particle--${subPhase}`}
+                    initial={subPhase === 'fragmenting' ? { 
+                      opacity: 0, 
+                      x: startPos.x, 
+                      y: startPos.y,
+                      scale: 0.3
+                    } : {}}
+                    animate={subPhase === 'fragmenting' ? { 
+                      opacity: 1, 
+                      x: 0, 
+                      y: 0,
+                      scale: 1,
+                      transition: { 
+                        duration: 0.8, 
+                        delay: index * 0.01,
+                        ease: [0.34, 1.56, 0.64, 1]
+                      }
+                    } : subPhase === 'coalescing' ? {
+                      opacity: 1,
+                      scale: [1, 1.15, 1],
+                      backgroundColor: particleColor,
+                      boxShadow: [
+                        '0 0 8px rgba(255, 215, 0, 0.6)',
+                        '0 0 16px rgba(255, 215, 0, 0.9)',
+                        '0 0 4px rgba(255, 215, 0, 0.3)'
+                      ],
+                      transition: { 
+                        duration: 1.2, 
+                        delay: index * 0.015,
+                        ease: 'easeInOut'
+                      }
+                    } : {}}
+                    style={{
+                      '--start-x': `${startPos.x}px`,
+                      '--start-y': `${startPos.y}px`,
+                      '--particle-color': particleColor,
+                    }}
+                  />
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
+      {/* Status message */}
+      <div className="blueprint-status">
+        <motion.span
+          className="blueprint-status__quill"
+          animate={{ rotate: [-5, 5, -5] }}
+          transition={{ duration: 0.5, repeat: Infinity }}
+        >
+          {subPhase === 'drawing' ? '✒️' : subPhase === 'fragmenting' ? '✨' : '🔮'}
+        </motion.span>
+        <span className="blueprint-status__text">{message}</span>
+      </div>
+    </motion.div>
+  );
+};
+
 const MysteryMapChallenge = ({
   isOpen,
   onClose,
   onMapSubmitted,
-  initialCoins = 1500,
+  initialCoins = 10000,
   defaultTab = 'create'
 }) => {
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [prompt, setPrompt] = useState('');
   const [coins, setCoins] = useState(initialCoins);
-  const [generationsLeft, setGenerationsLeft] = useState(MAX_GENERATIONS);
   const [myMaps, setMyMaps] = useState([]);
 
   const [creatorPhase, setCreatorPhase] = useState('idle');
+  const [draftingSubPhase, setDraftingSubPhase] = useState('drawing');
   const [revealedPixels, setRevealedPixels] = useState([]);
   const [forgeProgress, setForgeProgress] = useState(0);
   const [forgeMessage, setForgeMessage] = useState('');
@@ -198,10 +380,31 @@ const MysteryMapChallenge = ({
     };
   }, []);
 
-  const canGenerate = prompt.trim().length > 0 && generationsLeft > 0 && coins >= GENERATION_COST;
-  const isPremiumUser = coins >= PREMIUM_THRESHOLD;
-  const coinsToUnlock = Math.max(0, PREMIUM_THRESHOLD - coins);
-  const unlockProgress = Math.min(100, (coins / PREMIUM_THRESHOLD) * 100);
+  // Cycle through messages based on current sub-phase
+  useEffect(() => {
+    if (creatorPhase !== 'drafting') return;
+    
+    let messages;
+    if (draftingSubPhase === 'drawing') {
+      messages = DRAWING_MESSAGES;
+    } else if (draftingSubPhase === 'fragmenting') {
+      messages = FRAGMENTING_MESSAGES;
+    } else {
+      messages = COALESCING_MESSAGES;
+    }
+    
+    let msgIndex = 0;
+    setForgeMessage(messages[0]);
+    
+    const interval = setInterval(() => {
+      msgIndex = (msgIndex + 1) % messages.length;
+      setForgeMessage(messages[msgIndex]);
+    }, 600);
+    
+    return () => clearInterval(interval);
+  }, [creatorPhase, draftingSubPhase]);
+
+  const canGenerate = prompt.trim().length > 0 && coins >= MAP_GENERATION_COST;
 
   const handlePromptChange = useCallback((e) => {
     const value = e.target.value;
@@ -214,64 +417,82 @@ const MysteryMapChallenge = ({
 
   const handleGenerate = useCallback(() => {
     if (!canGenerate) return;
-    setCoins(prev => prev - GENERATION_COST);
-    setGenerationsLeft(prev => prev - 1);
-    setCreatorPhase('forging');
+    setCoins(prev => prev - MAP_GENERATION_COST);
     setRevealedPixels([]);
     setForgeProgress(0);
-    setForgeMessage(FORGE_MESSAGES[0]);
-    setScanPhase(true);
+    setForgeMessage(DRAWING_MESSAGES[0]);
+    
+    // Phase 1: Drafting with sub-phases
+    setCreatorPhase('drafting');
+    setDraftingSubPhase('drawing');
 
     if (!audioCtxRef.current) {
       audioCtxRef.current = createAudioContext();
     }
     playScanSound(audioCtxRef.current);
 
+    // Sub-phase 1: Drawing (2.5s) - golden lines draw across screen
     setTimeout(() => {
-      setScanPhase(false);
-      let pixelIndex = 0;
-      forgeIntervalRef.current = setInterval(() => {
-        if (pixelIndex < TOTAL_PIXELS) {
-          setRevealedPixels(prev => [...prev, SPIRAL_ORDER[pixelIndex]]);
-          const progress = ((pixelIndex + 1) / TOTAL_PIXELS) * 100;
-          setForgeProgress(progress);
-          const msgIdx = Math.min(
-            Math.floor((progress / 100) * FORGE_MESSAGES.length),
-            FORGE_MESSAGES.length - 1
-          );
-          setForgeMessage(FORGE_MESSAGES[msgIdx]);
-          if (pixelIndex % 4 === 0) {
-            playForgeSound(audioCtxRef.current, progress);
-          }
-          pixelIndex++;
-        } else {
-          clearInterval(forgeIntervalRef.current);
-          forgeIntervalRef.current = null;
-          playCompleteSound(audioCtxRef.current);
+      setDraftingSubPhase('fragmenting');
+      
+      // Sub-phase 2: Fragmenting (1s) - lines break into particles
+      setTimeout(() => {
+        setDraftingSubPhase('coalescing');
+        
+        // Sub-phase 3: Coalescing (1.5s) - particles settle into 8x8 grid
+        setTimeout(() => {
+          // Seamless transition to revealing
+          setCreatorPhase('revealing');
+          setScanPhase(true);
+          
           setTimeout(() => {
-            setCreatorPhase('complete');
-            setCurrentMapData({
-              id: Date.now(),
-              name: prompt.trim() || 'Mystery Map',
-              prompt: prompt.trim(),
-              colors: pixelColors,
-              theme: 'dungeon',
-              difficulty: 'medium',
-              submitted: false
-            });
-          }, 600);
-        }
-      }, 80);
-    }, 1500);
+            setScanPhase(false);
+            let pixelIndex = 0;
+            forgeIntervalRef.current = setInterval(() => {
+              if (pixelIndex < TOTAL_PIXELS) {
+                setRevealedPixels(prev => [...prev, SPIRAL_ORDER[pixelIndex]]);
+                const progress = ((pixelIndex + 1) / TOTAL_PIXELS) * 100;
+                setForgeProgress(progress);
+                const msgIdx = Math.min(
+                  Math.floor((progress / 100) * REVEAL_MESSAGES.length),
+                  REVEAL_MESSAGES.length - 1
+                );
+                setForgeMessage(REVEAL_MESSAGES[msgIdx]);
+                if (pixelIndex % 4 === 0) {
+                  playForgeSound(audioCtxRef.current, progress);
+                }
+                pixelIndex++;
+              } else {
+                clearInterval(forgeIntervalRef.current);
+                forgeIntervalRef.current = null;
+                playCompleteSound(audioCtxRef.current);
+                setTimeout(() => {
+                  setCreatorPhase('complete');
+                  setCurrentMapData({
+                    id: Date.now(),
+                    name: prompt.trim() || 'Mystery Map',
+                    prompt: prompt.trim(),
+                    colors: pixelColors,
+                    theme: 'dungeon',
+                    difficulty: 'medium',
+                    submitted: false
+                  });
+                }, 600);
+              }
+            }, 80);
+          }, 500);
+        }, 1500); // Coalescing: 1.5s
+      }, 1000); // Fragmenting: 1s
+    }, 2500); // Drawing: 2.5s
   }, [canGenerate, prompt, pixelColors]);
 
   const handleRegenerate = useCallback(() => {
-    if (generationsLeft <= 0 || coins < GENERATION_COST) return;
+    if (coins < MAP_GENERATION_COST) return;
     setCreatorPhase('idle');
     setRevealedPixels([]);
     setForgeProgress(0);
     setCurrentMapData(null);
-  }, [generationsLeft, coins]);
+  }, [coins]);
 
   const handleSubmit = useCallback((mapToSubmit = null) => {
     const mapData = mapToSubmit || currentMapData;
@@ -306,17 +527,6 @@ const MysteryMapChallenge = ({
     setActiveTab('create');
     setCreatorPhase('idle');
   }, []);
-
-  const handleSaveAsDraft = useCallback(() => {
-    if (!currentMapData) return;
-    const draftMap = { ...currentMapData, submitted: false, isDraft: true };
-    setMyMaps(prev => [draftMap, ...prev]);
-    setCreatorPhase('idle');
-    setPrompt('');
-    setCurrentMapData(null);
-    setRevealedPixels([]);
-    setActiveTab('mymaps');
-  }, [currentMapData]);
 
   const handleClose = useCallback(() => {
     if (forgeIntervalRef.current) {
@@ -467,12 +677,9 @@ const MysteryMapChallenge = ({
                         </span>
                       </div>
                       <div className="aura-input-meta">
-                        <span className="aura-gen-badge--inline">
-                          {generationsLeft}/{MAX_GENERATIONS} generates left
-                        </span>
                         <span className="aura-gen-badge--inline aura-gen-badge--coin">
                           <img src={CoinIcon} alt="" className="aura-gen-badge__coin-icon" />
-                          {GENERATION_COST} per map
+                          {MAP_GENERATION_COST.toLocaleString()} to generate
                         </span>
                       </div>
 
@@ -498,7 +705,7 @@ const MysteryMapChallenge = ({
                       {/* Generate button */}
                       <div className="aura-actions">
                         <motion.button
-                          className={`aura-btn-primary ${canGenerate ? '' : 'disabled'}`}
+                          className={`wa-btn-primary ${canGenerate ? '' : 'disabled'}`}
                           onClick={handleGenerate}
                           disabled={!canGenerate}
                           whileHover={canGenerate ? { scale: 1.02 } : {}}
@@ -511,9 +718,7 @@ const MysteryMapChallenge = ({
                           <p className="aura-hint--requirement">
                             {prompt.trim().length === 0
                               ? 'Type or pick a prompt above to generate'
-                              : generationsLeft <= 0
-                                ? 'No generations remaining'
-                                : 'Not enough coins'}
+                              : `You need ${MAP_GENERATION_COST.toLocaleString()} coins to generate a map`}
                           </p>
                         )}
                         {canGenerate && (
@@ -523,8 +728,49 @@ const MysteryMapChallenge = ({
                     </motion.div>
                   )}
 
-                  {/* FORGING + COMPLETE — shared frame */}
-                  {(creatorPhase === 'forging' || creatorPhase === 'complete') && (
+                  {/* DRAFTING — Blueprint animation with sub-phases */}
+                  {creatorPhase === 'drafting' && (
+                    <motion.div
+                      className="aura-forging"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <div className="aura-map-frame">
+                        <BlueprintOverlay 
+                          subPhase={draftingSubPhase}
+                          message={forgeMessage}
+                          pixelColors={pixelColors}
+                        />
+                      </div>
+
+                      <motion.div
+                        className="aura-forge-below"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <div className="aura-forge-status">
+                          <motion.span
+                            className="aura-forge-status__icon"
+                            animate={{ rotate: [0, -12, 12, -12, 0] }}
+                            transition={{ duration: 0.6, repeat: Infinity }}
+                          >
+                            {draftingSubPhase === 'drawing' ? '✒️' : draftingSubPhase === 'fragmenting' ? '✨' : '🔮'}
+                          </motion.span>
+                          <span className="aura-forge-status__text">
+                            {draftingSubPhase === 'drawing' ? 'CHARTING MAP...' : 
+                             draftingSubPhase === 'fragmenting' ? 'TRANSFORMING...' : 
+                             'CRYSTALLIZING...'}
+                          </span>
+                        </div>
+                      </motion.div>
+                    </motion.div>
+                  )}
+
+                  {/* REVEALING + COMPLETE — shared frame */}
+                  {(creatorPhase === 'revealing' || creatorPhase === 'complete') && (
                     <motion.div
                       className="aura-forging"
                       initial={{ opacity: 0 }}
@@ -532,7 +778,7 @@ const MysteryMapChallenge = ({
                       transition={{ duration: 0.3 }}
                     >
                       <div className="aura-map-frame">
-                        {/* Map image — always present underneath, revealed progressively */}
+                        {/* Map image — only shown during revealing phase */}
                         <img
                           className="aura-map-frame__img"
                           src={MockupMapImage}
@@ -541,7 +787,7 @@ const MysteryMapChallenge = ({
 
                         {/* Pixel grid overlay — reveals map underneath as pixels become transparent */}
                         <AnimatePresence>
-                          {creatorPhase === 'forging' && (
+                          {creatorPhase === 'revealing' && (
                             <motion.div
                               className={`aura-pixel-grid ${scanPhase ? 'aura-pixel-grid--scanning' : ''}`}
                               exit={{ opacity: 0 }}
@@ -581,31 +827,11 @@ const MysteryMapChallenge = ({
                           )}
                         </AnimatePresence>
 
-                        {/* Lock overlay for teaser users when map is complete */}
-                        {creatorPhase === 'complete' && !isPremiumUser && (
-                          <motion.div
-                            className="aura-map-lock-overlay"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.5, delay: 0.3 }}
-                          >
-                            <div className="aura-map-lock-overlay__content">
-                              <motion.span
-                                className="aura-map-lock-overlay__icon"
-                                animate={{ scale: [1, 1.1, 1] }}
-                                transition={{ duration: 2, repeat: Infinity }}
-                              >
-                                🔒
-                              </motion.span>
-                              <span className="aura-map-lock-overlay__text">Preview Only</span>
-                            </div>
-                          </motion.div>
-                        )}
                       </div>
 
-                      {/* Below the frame: progress during forging, buttons on complete */}
+                      {/* Below the frame: progress during revealing, buttons on complete */}
                       <AnimatePresence mode="wait">
-                        {creatorPhase === 'forging' && (
+                        {creatorPhase === 'revealing' && (
                           <motion.div
                             key="forge-info"
                             className="aura-forge-below"
@@ -634,7 +860,7 @@ const MysteryMapChallenge = ({
                               >
                                 ⚒️
                               </motion.span>
-                              <span className="aura-forge-status__text">FORGING MAP...</span>
+                              <span className="aura-forge-status__text">REVEALING MAP...</span>
                             </div>
                           </motion.div>
                         )}
@@ -647,58 +873,24 @@ const MysteryMapChallenge = ({
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.4, delay: 0.3 }}
                           >
-                            {isPremiumUser ? (
-                              <motion.button
-                                className="aura-btn-primary"
-                                onClick={() => handleSubmit()}
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                transition={springTransition}
-                              >
-                                SEND TO TEACHER
-                              </motion.button>
-                            ) : (
-                              <div className="aura-locked-submit">
-                                <div className="aura-locked-submit__header">
-                                  <span className="aura-locked-submit__icon">🔒</span>
-                                  <span className="aura-locked-submit__title">Unlock to Submit</span>
-                                </div>
-                                <div className="aura-locked-submit__progress">
-                                  <div className="aura-locked-submit__bar">
-                                    <motion.div 
-                                      className="aura-locked-submit__fill"
-                                      initial={{ width: 0 }}
-                                      animate={{ width: `${unlockProgress}%` }}
-                                      transition={{ duration: 1, ease: "easeOut" }}
-                                    />
-                                  </div>
-                                  <span className="aura-locked-submit__count">
-                                    <img src={CoinIcon} alt="" className="aura-locked-submit__coin-icon" />
-                                    {coins.toLocaleString()} / {PREMIUM_THRESHOLD.toLocaleString()}
-                                  </span>
-                                </div>
-                                <p className="aura-locked-submit__hint">
-                                  Earn {coinsToUnlock.toLocaleString()} more coins to submit!
-                                </p>
-                                <motion.button
-                                  className="aura-locked-submit__save"
-                                  onClick={handleSaveAsDraft}
-                                  whileHover={{ scale: 1.02 }}
-                                  whileTap={{ scale: 0.98 }}
-                                >
-                                  💾 SAVE AS DRAFT
-                                </motion.button>
-                              </div>
-                            )}
                             <motion.button
-                              className={`aura-btn-secondary ${generationsLeft <= 0 || coins < GENERATION_COST ? 'disabled' : ''}`}
-                              onClick={handleRegenerate}
-                              disabled={generationsLeft <= 0 || coins < GENERATION_COST}
-                              whileHover={generationsLeft > 0 ? { y: -2 } : {}}
-                              whileTap={generationsLeft > 0 ? { y: 0 } : {}}
+                              className="wa-btn-primary"
+                              onClick={() => handleSubmit()}
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
                               transition={springTransition}
                             >
-                              RETRY × {generationsLeft} remaining
+                              SEND TO TEACHER
+                            </motion.button>
+                            <motion.button
+                              className={`wa-btn-secondary ${coins < MAP_GENERATION_COST ? 'disabled' : ''}`}
+                              onClick={handleRegenerate}
+                              disabled={coins < MAP_GENERATION_COST}
+                              whileHover={coins >= MAP_GENERATION_COST ? { scale: 1.02 } : {}}
+                              whileTap={coins >= MAP_GENERATION_COST ? { scale: 0.98 } : {}}
+                              transition={springTransition}
+                            >
+                              RETRY ({MAP_GENERATION_COST.toLocaleString()} coins)
                             </motion.button>
                           </motion.div>
                         )}
@@ -767,7 +959,7 @@ const MysteryMapChallenge = ({
                     </div>
                     
                     <motion.button
-                      className="aura-btn-primary aura-mymaps-empty__cta"
+                      className="wa-btn-primary aura-mymaps-empty__cta"
                       onClick={() => setActiveTab('create')}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
@@ -803,41 +995,16 @@ const MysteryMapChallenge = ({
                             )}
                           </div>
                           <div className="aura-map-card__actions">
-                            {!map.submitted ? (
-                              isPremiumUser ? (
-                                <motion.button
-                                  className="aura-map-card__submit"
-                                  onClick={() => handleSubmit(map)}
-                                  whileHover={{ scale: 1.05 }}
-                                  whileTap={{ scale: 0.95 }}
-                                >
-                                  SUBMIT
-                                </motion.button>
-                              ) : (
-                                <span className="aura-map-card__draft">🔒 DRAFT</span>
-                              )
-                            ) : (
-                              isPremiumUser ? (
-                                <motion.button
-                                  className="aura-map-card__submit resubmit"
-                                  onClick={() => handleResubmit(map)}
-                                  whileHover={{ scale: 1.05 }}
-                                  whileTap={{ scale: 0.95 }}
-                                >
-                                  RESUBMIT
-                                </motion.button>
-                              ) : (
-                                <span className="aura-map-card__status">✓ SUBMITTED</span>
-                              )
+                            {!map.submitted && (
+                              <motion.button
+                                className="aura-map-card__submit"
+                                onClick={() => handleSubmit(map)}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                              >
+                                SUBMIT
+                              </motion.button>
                             )}
-                            <motion.button
-                              className="aura-map-card__delete"
-                              onClick={() => handleDeleteMap(map.id)}
-                              whileHover={{ scale: 1.1 }}
-                              whileTap={{ scale: 0.9 }}
-                            >
-                              🗑️
-                            </motion.button>
                           </div>
                         </motion.div>
                       ))}

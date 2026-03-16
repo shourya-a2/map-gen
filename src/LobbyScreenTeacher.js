@@ -73,53 +73,45 @@ const LobbyScreenTeacher = () => {
         </div>
       </nav>
 
-      {/* Fixed position map action card - bottom left */}
+      {/* Fixed position arena card - bottom left */}
       <motion.div 
-        className={`map-action-card ${!winnerMap ? 'map-action-card--pulse' : 'map-action-card--selected'}`}
-        onClick={!winnerMap ? openCarousel : undefined}
-        whileHover={!winnerMap ? { scale: 1.03 } : {}}
-        whileTap={!winnerMap ? { scale: 0.97 } : {}}
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.3, delay: 0.2 }}
-        style={{ cursor: !winnerMap ? 'pointer' : 'default' }}
+        className="arena-card"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.2 }}
       >
-        {!winnerMap ? (
-          <>
-            <div className="map-action-card__icon-wrapper">
-              <span className="map-action-card__icon">🗺️</span>
-            </div>
-            <div className="map-action-card__content">
-              <span className="map-action-card__label">SELECT MAP</span>
-              <span className="map-action-card__hint">Choose today's arena</span>
-            </div>
-            <span className="map-action-card__arrow">→</span>
-          </>
-        ) : (
-          <>
-            <div className="map-action-card__thumb-wrapper">
+        <div className="arena-card__frame">
+          <div className="arena-card__header">
+            <span className="arena-card__header-text">TODAY'S ARENA</span>
+          </div>
+          
+          <div className="arena-card__preview">
+            {winnerMap ? (
               <img 
                 src={winnerMap.mapImage} 
                 alt={winnerMap.mapTitle}
-                className="map-action-card__thumb"
+                className="arena-card__image"
               />
-            </div>
-            <div className="map-action-card__content">
-              <span className="map-action-card__label">TODAY'S MAP</span>
-              <span className="map-action-card__title">{winnerMap.mapTitle}</span>
-              <span className="map-action-card__author">by {winnerMap.studentName}</span>
-            </div>
-            <button 
-              className="map-action-card__change-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                openCarousel();
-              }}
-            >
-              Change
-            </button>
-          </>
-        )}
+            ) : (
+              <div className="arena-card__placeholder">
+                <span className="arena-card__placeholder-icon">?</span>
+              </div>
+            )}
+          </div>
+          
+          <div className="arena-card__title">
+            {winnerMap ? winnerMap.mapTitle : 'No Map Selected'}
+          </div>
+          
+          <motion.button 
+            className="arena-card__btn"
+            onClick={openCarousel}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            {winnerMap ? 'Change Arena' : 'Select Arena'} →
+          </motion.button>
+        </div>
       </motion.div>
 
       {/* Main content area - empty, no overlay */}
