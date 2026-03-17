@@ -327,6 +327,7 @@ const MysteryMapChallenge = ({
   const [prompt, setPrompt] = useState('');
   const [coins, setCoins] = useState(initialCoins);
   const [myMaps, setMyMaps] = useState([]);
+  const [generationsRemaining, setGenerationsRemaining] = useState(0);
 
   const [creatorPhase, setCreatorPhase] = useState('idle');
   const [draftingSubPhase, setDraftingSubPhase] = useState('drawing');
@@ -404,7 +405,8 @@ const MysteryMapChallenge = ({
     return () => clearInterval(interval);
   }, [creatorPhase, draftingSubPhase]);
 
-  const canGenerate = prompt.trim().length > 0 && coins >= MAP_GENERATION_COST;
+  const canGenerate = prompt.trim().length > 0 && 
+    (generationsRemaining > 0 || coins >= MAP_GENERATION_COST);
 
   const handlePromptChange = useCallback((e) => {
     const value = e.target.value;
@@ -417,7 +419,15 @@ const MysteryMapChallenge = ({
 
   const handleGenerate = useCallback(() => {
     if (!canGenerate) return;
-    setCoins(prev => prev - MAP_GENERATION_COST);
+    
+    // Deduct coins or use remaining generation
+    if (generationsRemaining > 0) {
+      setGenerationsRemaining(prev => prev - 1);
+    } else {
+      setCoins(prev => prev - MAP_GENERATION_COST);
+      setGenerationsRemaining(2); // 3 total, used 1
+    }
+    
     setRevealedPixels([]);
     setForgeProgress(0);
     setForgeMessage(DRAWING_MESSAGES[0]);
@@ -484,15 +494,15 @@ const MysteryMapChallenge = ({
         }, 1500); // Coalescing: 1.5s
       }, 1000); // Fragmenting: 1s
     }, 2500); // Drawing: 2.5s
-  }, [canGenerate, prompt, pixelColors]);
+  }, [canGenerate, prompt, pixelColors, generationsRemaining]);
 
   const handleRegenerate = useCallback(() => {
-    if (coins < MAP_GENERATION_COST) return;
+    if (generationsRemaining <= 0 && coins < MAP_GENERATION_COST) return;
     setCreatorPhase('idle');
     setRevealedPixels([]);
     setForgeProgress(0);
     setCurrentMapData(null);
-  }, [coins]);
+  }, [coins, generationsRemaining]);
 
   const handleSubmit = useCallback((mapToSubmit = null) => {
     const mapData = mapToSubmit || currentMapData;
@@ -676,16 +686,8 @@ const MysteryMapChallenge = ({
                           {prompt.length}/{MAX_CHARS}
                         </span>
                       </div>
-                      <div className="aura-input-meta">
-                        <span className="aura-gen-badge--inline aura-gen-badge--coin">
-                          <img src={CoinIcon} alt="" className="aura-gen-badge__coin-icon" />
-                          {MAP_GENERATION_COST.toLocaleString()} to generate
-                        </span>
-                      </div>
-
-                      {/* Suggestion chips — like Aura Lab pill buttons */}
+                      {/* Suggestion chips */}
                       <div className="aura-suggestions">
-                        <span className="aura-suggestions__label">TRY A PROMPT</span>
                         <div className="aura-suggestions__list">
                           {PROMPT_SUGGESTIONS.map((text, i) => (
                             <motion.button
@@ -702,28 +704,26 @@ const MysteryMapChallenge = ({
                         </div>
                       </div>
 
-                      {/* Generate button */}
+                      {/* Generate button with integrated cost display */}
                       <div className="aura-actions">
-                        <motion.button
-                          className={`wa-btn-primary ${canGenerate ? '' : 'disabled'}`}
-                          onClick={handleGenerate}
-                          disabled={!canGenerate}
-                          whileHover={canGenerate ? { scale: 1.02 } : {}}
-                          whileTap={canGenerate ? { scale: 0.98 } : {}}
-                          transition={springTransition}
-                        >
-                          GENERATE MAP
-                        </motion.button>
-                        {!canGenerate && (
-                          <p className="aura-hint--requirement">
-                            {prompt.trim().length === 0
-                              ? 'Type or pick a prompt above to generate'
-                              : `You need ${MAP_GENERATION_COST.toLocaleString()} coins to generate a map`}
-                          </p>
-                        )}
-                        {canGenerate && (
-                          <p className="aura-hint">The wilder the idea, the cooler the map.</p>
-                        )}
+                        <div className="aura-generate-row">
+                          <motion.button
+                            className={`wa-btn-primary ${canGenerate ? '' : 'disabled'}`}
+                            onClick={handleGenerate}
+                            disabled={!canGenerate}
+                            whileHover={canGenerate ? { scale: 1.02 } : {}}
+                            whileTap={canGenerate ? { scale: 0.98 } : {}}
+                            transition={springTransition}
+                          >
+                            <span className="wa-btn-primary__text">CREATE</span>
+                            <span className="wa-btn-primary__cost">
+                              <img src={CoinIcon} alt="" className="wa-btn-primary__coin" />
+                              <span>{generationsRemaining > 0 
+                                ? `${generationsRemaining}/3`
+                                : MAP_GENERATION_COST.toLocaleString()}</span>
+                            </span>
+                          </motion.button>
+                        </div>
                       </div>
                     </motion.div>
                   )}

@@ -91,12 +91,12 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: min(180px, 25vh);
+  height: min(320px, 45vh);
   z-index: 1;
   overflow: hidden;
   pointer-events: none;
-  mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
 }
 
 .aura-video-bg__video {
@@ -293,7 +293,7 @@
 .aura-title-block {
   position: relative;
   text-align: center;
-  padding: min(160px, 22vh) 20px 16px;
+  padding: min(280px, 40vh) 20px 16px;
   z-index: 2;
   flex-shrink: 0;
 }
@@ -518,6 +518,16 @@
   padding-top: 0;
 }
 
+/* Generate row */
+.aura-generate-row {
+  display: flex;
+  align-items: center;
+}
+
+.aura-generate-row .wa-btn-primary {
+  flex: 1;
+}
+
 /* ═══════════════════════════════════════════
    PRIMARY BUTTON — Pixel Button (Aura Lab Style)
    Neo retro sci-fi neon yellow CTA
@@ -526,9 +536,10 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  gap: 16px;
   width: 100%;
-  padding: 14px 36px;
+  padding: 14px 24px;
   background: #ffe430;
   color: #0a0a0f;
   font-family: var(--wa-font-body);
@@ -549,6 +560,23 @@
     0 0 80px rgba(255, 228, 48, 0.1);
   animation: pixel-btn-pulse 2s ease-in-out infinite;
   transition: background 0.15s;
+}
+
+/* Button internal elements */
+.wa-btn-primary__text {
+  flex-shrink: 0;
+}
+
+.wa-btn-primary__cost {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wa-btn-primary__coin {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }
 
 .wa-btn-primary:hover:not(.disabled) {
@@ -1530,7 +1558,7 @@
 
 @media (max-height: 700px) {
   .aura-title-block {
-    padding-top: min(130px, 20vh);
+    padding-top: min(220px, 35vh);
   }
 
   .aura-title-block--high {
@@ -1538,11 +1566,11 @@
   }
 
   .aura-mymaps {
-    padding-top: min(130px, 20vh);
+    padding-top: min(220px, 35vh);
   }
 
   .aura-video-bg {
-    height: min(150px, 22vh);
+    height: min(260px, 38vh);
   }
 
   .aura-submitting__icon {
@@ -1552,7 +1580,7 @@
 
 @media (max-height: 550px) {
   .aura-title-block {
-    padding-top: min(100px, 18vh);
+    padding-top: min(180px, 30vh);
   }
 
   .aura-title-block--high {
@@ -1560,11 +1588,11 @@
   }
 
   .aura-mymaps {
-    padding-top: min(100px, 18vh);
+    padding-top: min(180px, 30vh);
   }
 
   .aura-video-bg {
-    height: min(120px, 20vh);
+    height: min(200px, 32vh);
   }
 
   .aura-input {
