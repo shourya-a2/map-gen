@@ -32,6 +32,43 @@
   overflow: auto;
 }
 
+/* ---- START GAME BUTTON ---- */
+.teacher-lobby__start-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: #1a0e00;
+  padding: 22px 56px;
+  background: linear-gradient(180deg, #FFE44D 0%, #FFD700 40%, #F5A623 100%);
+  border: 3px solid #b8860b;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  box-shadow:
+    0 6px 0 0 #b8860b,
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    0 0 40px rgba(255, 215, 0, 0.25);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  image-rendering: pixelated;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.teacher-lobby__start-btn:hover {
+  box-shadow:
+    0 6px 0 0 #b8860b,
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    0 0 60px rgba(255, 215, 0, 0.5),
+    0 0 100px rgba(255, 215, 0, 0.2);
+}
+
+.teacher-lobby__start-btn:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 2px 0 0 #b8860b,
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 0 30px rgba(255, 215, 0, 0.25);
+}
+
 .teacher-navbar__left {
   display: flex;
   align-items: center;
@@ -172,128 +209,282 @@
 
 /* ============================================
    MAP UI CARD - Bottom Left Corner
-   Figma design: Orange glassmorphism style
+   Figma glass card with tilted map + Select Map
    ============================================ */
 
 .map-ui-card {
   position: absolute;
-  bottom: 33px;
-  left: 33px;
+  bottom: 35px;
+  left: 35px;
   z-index: 100;
+  cursor: pointer;
+  overflow: visible;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 20px 8px 8px 8px;
+}
+
+/* Notification badge on the map */
+.map-ui-card__badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 12px;
+  background: #6b5344;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  font-family: 'Geist Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  padding: 8px 12px;
+  pointer-events: none;
+  z-index: 15;
+  box-shadow: 0 2px 6px rgba(107, 83, 68, 0.4);
+}
+
+/* White flash overlay on click */
+.map-ui-card__flash {
+  position: absolute;
+  inset: 0;
+  background: white;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  background: 
-    linear-gradient(90deg, rgba(229, 135, 28, 0.2) 0%, rgba(229, 135, 28, 0.2) 100%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 100%);
-  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10;
 }
 
-/* Enhanced pulse animation - dramatic glow + scale for attention */
-@keyframes mapCardPulse {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 
-      0 0 15px rgba(229, 135, 28, 0.5),
-      0 0 30px rgba(229, 135, 28, 0.3);
-  }
-  50% {
-    transform: scale(1.05);
-    box-shadow: 
-      0 0 40px rgba(229, 135, 28, 0.8),
-      0 0 80px rgba(229, 135, 28, 0.5),
-      0 0 120px rgba(229, 135, 28, 0.3);
-  }
+.map-ui-card__flash--active {
+  animation: flashBurst 0.3s ease-out forwards;
 }
 
-.map-ui-card--needs-selection {
-  animation: mapCardPulse 1.5s ease-in-out infinite;
+@keyframes flashBurst {
+  0% { opacity: 0.8; }
+  100% { opacity: 0; }
 }
 
-.map-ui-card__content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
+/* ---- MAP WRAPPER (tilted) ---- */
 
-.map-ui-card__title {
-  font-family: 'Quicksand', sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 20px;
-  color: #ffffff;
-  text-align: center;
-  letter-spacing: -0.24px;
-  white-space: nowrap;
-}
-
-.map-ui-card__preview {
-  width: 160px;
-  height: 96px;
-  border-radius: 4px;
-  overflow: hidden;
+.map-ui-card__map-wrapper {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.map-ui-card__image {
+.map-ui-card__map-frame {
+  position: relative;
+  width: 190px;
+  height: 114px;
+  border-radius: 6px;
+  overflow: visible;
+  transform: rotate(-6deg);
+  border: none;
+  animation: mapFloatBob 3s ease-in-out infinite;
+}
+
+.map-ui-card__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: top;
+  display: block;
+  border-radius: 6px;
 }
 
-.map-ui-card__placeholder {
+@keyframes mapGoldPulse {
+  0%, 100% {
+    border-color: rgba(255, 215, 0, 0.4);
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.4),
+      0 0 15px rgba(255, 215, 0, 0.3),
+      0 0 30px rgba(255, 215, 0, 0.15);
+  }
+  50% {
+    border-color: rgba(255, 215, 0, 1);
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.4),
+      0 0 25px rgba(255, 215, 0, 0.7),
+      0 0 50px rgba(255, 215, 0, 0.4),
+      0 0 80px rgba(255, 215, 0, 0.2);
+  }
+}
+
+@keyframes mapFloatBob {
+  0%, 100% { transform: rotate(-6deg) translateY(0); }
+  50% { transform: rotate(-6deg) translateY(-4px); }
+}
+
+/* Sonar ripple ring */
+.map-ui-card__map-frame::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 215, 0, 0);
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* ---- SELECT MAP BUTTON ---- */
+
+.map-ui-card__btn-wrapper {
   width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px dashed rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
-}
-
-.map-ui-card__placeholder-icon {
-  font-family: 'Quicksand', sans-serif;
-  font-size: 32px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.4);
+  padding-top: 4px;
+  z-index: 5;
 }
 
 .map-ui-card__btn {
-  width: 160px;
-  min-width: 64px;
-  padding: 4px 12px;
-  background: #ffffff;
+  width: 100%;
+  height: 40px;
   border: 1px solid rgba(9, 9, 9, 0.2);
   border-radius: 8px;
+  background: white;
   font-family: 'Quicksand', sans-serif;
-  font-size: 14px;
   font-weight: 700;
-  line-height: 24px;
+  font-size: 16px;
   color: #090909;
-  text-align: center;
-  letter-spacing: -0.14px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  position: relative;
   overflow: hidden;
+  box-shadow: inset 0 -4px 0 0 rgba(9, 9, 9, 0.2);
+  transition: all 0.15s ease;
+  padding-bottom: 4px;
 }
 
 .map-ui-card__btn:hover {
   background: #f5f5f5;
-  border-color: rgba(9, 9, 9, 0.3);
+  box-shadow: inset 0 -4px 0 0 rgba(9, 9, 9, 0.25);
 }
 
 .map-ui-card__btn:active {
-  background: #ebebeb;
-  transform: translateY(1px);
+  box-shadow: inset 0 -2px 0 0 rgba(9, 9, 9, 0.2);
+  transform: translateY(2px);
+}
+
+/* ---- HOVER STATE ---- */
+
+.map-ui-card:hover .map-ui-card__map-frame {
+  animation: none;
+  transform: rotate(-6deg) scale(1.06);
+  filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.6));
+}
+
+.map-ui-card:hover .map-ui-card__map-frame::after {
+  animation: sonarRing 1.2s ease-out infinite;
+}
+
+@keyframes sonarRing {
+  0% {
+    inset: -3px;
+    border-color: rgba(255, 215, 0, 0.7);
+    opacity: 1;
+  }
+  100% {
+    inset: -24px;
+    border-color: rgba(255, 215, 0, 0);
+    opacity: 0;
+  }
+}
+
+/* ---- CLICK / ACTIVE STATE ---- */
+
+.map-ui-card:active .map-ui-card__map-frame {
+  transform: rotate(-6deg) scale(0.94);
+}
+
+/* ---- FLYING MAP THUMBNAIL ---- */
+
+.map-ui-card__fly-thumb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 190px;
+  height: 114px;
+  margin-top: -57px;
+  margin-left: -95px;
+  object-fit: cover;
+  border-radius: 6px;
+  pointer-events: none;
+  z-index: 25;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+.map-ui-card__fly-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 6px;
+  display: block;
+}
+
+.map-ui-card__fly-thumb-label {
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: 'Geist Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: #FFD700;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+}
+
+/* ---- PIXEL PARTICLES ---- */
+
+.map-ui-card__particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #FFD700;
+  image-rendering: pixelated;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.map-ui-card__particle--spark {
+  animation: particleSpark 0.6s ease-out forwards;
+}
+
+.map-ui-card__particle--burst {
+  animation: particleBurst 0.5s ease-out forwards;
+}
+
+@keyframes particleSpark {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--px-dx), var(--px-dy)) scale(0.5);
+  }
+}
+
+@keyframes particleBurst {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1.5);
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--px-dx), var(--px-dy)) scale(0);
+  }
 }
 
 /* ============================================
@@ -304,22 +495,17 @@
   .map-ui-card {
     bottom: 20px;
     left: 16px;
-    padding: 6px 10px;
-    gap: 12px;
+    width: 170px;
+    height: 170px;
   }
 
-  .map-ui-card__preview {
-    width: 140px;
-    height: 84px;
+  .map-ui-card__map-frame {
+    width: 170px;
+    height: 102px;
   }
 
-  .map-ui-card__title {
-    font-size: 14px;
-  }
-
-  .map-ui-card__btn {
-    width: 140px;
-    font-size: 13px;
+  .map-ui-card__map-wrapper {
+    width: 180px;
   }
 }
 
@@ -327,22 +513,89 @@
   .map-ui-card {
     bottom: 16px;
     left: 12px;
-    padding: 6px 8px;
-    gap: 10px;
+    width: 150px;
+    height: 155px;
   }
 
-  .map-ui-card__preview {
-    width: 120px;
-    height: 72px;
+  .map-ui-card__map-frame {
+    width: 150px;
+    height: 90px;
   }
 
-  .map-ui-card__title {
-    font-size: 13px;
+  .map-ui-card__map-wrapper {
+    width: 160px;
   }
 
   .map-ui-card__btn {
-    width: 120px;
-    font-size: 12px;
-    padding: 4px 10px;
+    height: 36px;
+    font-size: 14px;
   }
 }
+
+/* ============================================
+   DEV PREVIEW CONTROLS
+   ============================================ */
+
+.teacher-lobby__dev-controls {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 8px 12px;
+  backdrop-filter: blur(8px);
+}
+
+.teacher-lobby__dev-label {
+  font-family: monospace;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+}
+
+.teacher-lobby__dev-btn {
+  font-family: monospace;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.teacher-lobby__dev-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+.teacher-lobby__dev-btn.active {
+  background: rgba(255, 215, 0, 0.2);
+  border-color: rgba(255, 215, 0, 0.6);
+  color: #FFD700;
+}
+
+.teacher-lobby__dev-divider {
+  width: 1px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
+}
+
+.teacher-lobby__dev-start-btn {
+  border-color: rgba(255, 215, 0, 0.5);
+  color: #FFD700;
+}
+
+.teacher-lobby__dev-start-btn:hover {
+  background: rgba(255, 215, 0, 0.15);
+  border-color: rgba(255, 215, 0, 0.8);
+  color: #FFD700;
+}
+

@@ -1,6 +1,6 @@
 /* Map Overlay Modal — WayArena Style Guide */
 
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Press+Start+2P&display=swap');
 
 /* WayArena Design Tokens — Official Style Guide */
 .map-overlay {
@@ -32,7 +32,7 @@
   
   /* Typography */
   --wa-font-display: 'Press Start 2P', cursive;
-  --wa-font-body: 'Fredoka', sans-serif;
+  --wa-font-body: 'Geist Mono', monospace;
   
   /* Legacy aliases for compatibility */
   --warm-gold-500: var(--wa-gold-primary);
@@ -135,6 +135,7 @@
   max-width: 1200px;
   flex: 1;
   overflow-y: auto;
+  padding-top: 80px;
   padding-bottom: 20px;
 }
 
@@ -179,7 +180,7 @@
   row-gap: 40px;
   width: 100%;
   max-width: 1200px;
-  padding: 80px 24px 100px;
+  padding: 24px 24px 100px;
 }
 
 /* Grid card */
@@ -190,7 +191,6 @@
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
-  padding-bottom: 12px;
 }
 
 .map-overlay__grid-card:hover {
@@ -201,20 +201,235 @@
   /* Selected state handled by preview border */
 }
 
+/* Centered grid for sparse maps */
+.map-overlay__grid--centered {
+  justify-content: center;
+}
+
+/* Empty state */
+.map-overlay__empty-state {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: 40px 32px;
+  text-align: center;
+  gap: 24px;
+}
+
+/* Teacher status bar */
+.map-overlay__empty-teacher-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--wa-font-body);
+  font-size: 18px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 860px;
+  width: 100%;
+}
+
+/* Empty state visual + tip */
+.map-overlay__empty-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0;
+}
+
+.map-overlay__empty-map-img {
+  width: 200px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  transform: rotate(-4deg);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.map-overlay__empty-tip {
+  font-family: var(--wa-font-body);
+  font-size: 13px;
+  font-style: italic;
+  color: rgba(255, 215, 0, 0.4);
+  text-align: center;
+  max-width: 680px;
+  width: 100%;
+  margin: 0;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* Horizontal two-step guide */
+.map-overlay__guide-row {
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+  max-width: 680px;
+  width: 100%;
+}
+
+.map-overlay__guide-step {
+  flex: 1;
+  max-width: 280px;
+  background: rgba(30, 20, 8, 0.8);
+  border: 1.5px solid rgba(255, 215, 0, 0.25);
+  border-radius: 16px;
+  padding: 28px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  pointer-events: none;
+  cursor: default;
+}
+
+.map-overlay__guide-step-label {
+  font-family: var(--wa-font-body);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(255, 215, 0, 0.8);
+}
+
+/* Step 1: Map mockup */
+.map-overlay__guide-map-mockup {
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-overlay__guide-map-img {
+  width: 190px;
+  height: 114px;
+  object-fit: cover;
+  border-radius: 6px;
+  transform: rotate(-3deg);
+  display: block;
+  pointer-events: none;
+  margin: 6px 0;
+}
+
+/* Step 2: Input mockup */
+.map-overlay__guide-input-mockup {
+  width: 100%;
+  flex: 1;
+  background: rgba(255, 215, 0, 0.04);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-radius: 8px;
+  padding: 16px;
+  min-height: 100px;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-start;
+}
+
+.map-overlay__guide-input-placeholder {
+  font-family: var(--wa-font-body);
+  font-size: 14px;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Animated connecting arrow */
+.map-overlay__guide-arrow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-shrink: 0;
+  animation: arrowPulse 2s ease-in-out infinite;
+}
+
+.map-overlay__guide-arrow-line {
+  display: block;
+  width: 48px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.7));
+}
+
+.map-overlay__guide-arrow-head {
+  font-size: 20px;
+  color: rgba(255, 215, 0, 0.7);
+}
+
+@keyframes arrowPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* Device note — faint caption inside step boxes */
+.map-overlay__guide-device-note {
+  font-family: var(--wa-font-body);
+  font-size: 10px;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.25);
+  text-align: center;
+}
+
+/* Step caption — one-liner below content */
+.map-overlay__guide-step-caption {
+  font-family: var(--wa-font-body);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* Pulsing dot (used in teacher bar) */
+.map-overlay__empty-waiting-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ecdc4;
+  animation: waitingDotPulse 1.5s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes waitingDotPulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Counter live dot */
+.map-overlay__counter-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4ecdc4;
+  margin: 0 4px;
+  vertical-align: middle;
+  animation: liveDotBlink 1s ease-in-out infinite;
+}
+
+@keyframes liveDotBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
 /* Grid card preview */
 .map-overlay__grid-card-preview {
   width: 100%;
-  aspect-ratio: 1;
-  background: var(--wa-bg-brown);
+  aspect-ratio: 4 / 3;
+  background: transparent;
   border: none;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: none;
-  margin-bottom: 10px;
+  margin-bottom: 0;
+  position: relative;
 }
 
 .map-overlay__grid-card.selected .map-overlay__grid-card-preview {
   border: 4px solid var(--wa-gold-primary);
+  border-radius: 10px;
   box-shadow: 0 0 24px rgba(255, 215, 0, 0.6);
 }
 
@@ -222,6 +437,27 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: top;
+  border-radius: 6px;
+}
+
+/* Student name overlay on card image */
+.map-overlay__grid-card-name {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 28px 8px 10px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.92));
+  font-family: var(--wa-font-body);
+  font-size: 17px;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-radius: 0 0 6px 6px;
 }
 
 /* Grid card info */
@@ -249,9 +485,9 @@
 
 .map-overlay__grid-card-author {
   font-family: var(--wa-font-body);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--wa-text-secondary);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--wa-text-primary);
   text-align: center;
   max-width: 100%;
 }
@@ -301,6 +537,77 @@
   z-index: 10;
 }
 
+/* Skip & Start row (intercept state) */
+.map-overlay__skip-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 8px;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 80px;
+  z-index: 11;
+}
+
+.map-overlay__skip-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--wa-font-body);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+}
+
+.map-overlay__skip-btn {
+  font-family: var(--wa-font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.45);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.map-overlay__skip-btn:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Intercept text phase — centred message before maps appear */
+.map-overlay__intercept-phase {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-overlay__intercept-text {
+  font-family: 'Geist Mono', monospace;
+  font-size: 26px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.7);
+  text-align: center;
+  max-width: 520px;
+  letter-spacing: 0.2px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.map-overlay__intercept-sub {
+  font-size: 18px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.55);
+}
+
 /* Pixel Button Animation - subtle glow pulse */
 @keyframes pixel-btn-pulse {
   0%, 100% {
@@ -344,35 +651,8 @@
 }
 
 /* Secondary Button (Random Pick) - Ghost style with pixel border */
-.map-overlay__btn--random {
-  background: transparent;
-  color: var(--wa-gold-sandy);
-  box-shadow:
-    -4px 0 0 0 var(--wa-gold-dark),
-    4px 0 0 0 var(--wa-gold-dark),
-    0 -4px 0 0 var(--wa-gold-dark),
-    0 4px 0 0 var(--wa-gold-dark),
-    0 0 6px rgba(255, 215, 0, 0.15),
-    0 0 12px rgba(255, 215, 0, 0.05);
-}
-
-.map-overlay__btn--random:hover:not(:disabled) {
-  background: rgba(255, 215, 0, 0.1);
-  box-shadow:
-    -4px 0 0 0 var(--wa-gold-primary),
-    4px 0 0 0 var(--wa-gold-primary),
-    0 -4px 0 0 var(--wa-gold-primary),
-    0 4px 0 0 var(--wa-gold-primary),
-    0 0 10px rgba(255, 215, 0, 0.25),
-    0 0 20px rgba(255, 215, 0, 0.1);
-}
-
-.map-overlay__btn--random:active:not(:disabled) {
-  background: rgba(255, 215, 0, 0.15);
-}
-
-/* Primary Button (Select a Map) - Solid yellow with pixel border */
-.map-overlay__btn--confirm {
+/* Primary CTA — Begin Game */
+.map-overlay__btn--begin {
   background: #ffe430;
   color: #0a0a0f;
   box-shadow:
@@ -383,9 +663,22 @@
     0 0 6px rgba(255, 228, 48, 0.2),
     0 0 12px rgba(255, 228, 48, 0.1);
   animation: pixel-btn-pulse 2s ease-in-out infinite;
+  min-width: 320px;
+  padding: 16px 48px;
+  font-size: 18px;
+  font-weight: 500;
 }
 
-.map-overlay__btn--confirm:hover:not(:disabled) {
+.map-overlay__btn--begin:disabled {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.3);
+  box-shadow: none;
+  cursor: default;
+  animation: none;
+}
+
+.map-overlay__btn--begin:not(:disabled):hover {
   background: #fff06a;
   animation: none;
   box-shadow:
@@ -397,7 +690,7 @@
     0 0 24px rgba(255, 228, 48, 0.15);
 }
 
-.map-overlay__btn--confirm:active:not(:disabled) {
+.map-overlay__btn--begin:not(:disabled):active {
   background: #e6cc00;
   animation: none;
 }
@@ -406,6 +699,92 @@
   opacity: 0.4;
   cursor: not-allowed;
   animation: none;
+}
+
+/* ============================================
+   RANDOM PICK CARD
+   ============================================ */
+
+.map-overlay__grid-card--random {
+  cursor: pointer;
+}
+
+.map-overlay__grid-card--random.rolling {
+  cursor: default;
+}
+
+.map-overlay__grid-card-preview--random {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: rgba(255, 215, 0, 0.06);
+  border: 2px dashed rgba(255, 215, 0, 0.5);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.map-overlay__grid-card--random:hover .map-overlay__grid-card-preview--random {
+  background: rgba(255, 215, 0, 0.11);
+  border-color: rgba(255, 215, 0, 0.8);
+}
+
+.map-overlay__grid-card--random.rolling .map-overlay__grid-card-preview--random {
+  background: rgba(255, 215, 0, 0.09);
+  border-color: var(--wa-gold-primary);
+}
+
+.map-overlay__random-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  text-align: center;
+}
+
+.map-overlay__random-dice-icon {
+  font-size: 48px;
+  line-height: 1;
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.4));
+}
+
+.map-overlay__random-label {
+  font-family: var(--wa-font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--wa-gold-light);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* Highlighted card during random roll */
+.map-overlay__grid-card.highlighted .map-overlay__grid-card-preview {
+  border: 4px solid #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.5);
+}
+
+/* CTA wrap — subtitle + button stacked */
+.map-overlay__cta-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.map-overlay__cta-subtitle {
+  font-family: var(--wa-font-body);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--wa-text-secondary);
+  letter-spacing: 0.3px;
+  text-align: center;
 }
 
 /* ============================================
@@ -428,6 +807,8 @@
   align-items: center;
   justify-content: center;
   gap: 40px;
+  position: relative;
+  margin: 0 auto;
 }
 
 .random-spinner__wheel {
@@ -459,6 +840,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: top;
 }
 
 .random-spinner__center {
@@ -483,6 +865,14 @@
 .random-spinner__dice {
   font-size: 36px;
   filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .random-spinner__text {
@@ -555,18 +945,19 @@
 }
 
 .celebration__label {
-  font-family: var(--wa-font-display);
-  font-size: 10px;
+  font-family: var(--wa-font-body);
+  font-size: 22px;
   font-weight: 700;
   color: var(--wa-gold-primary);
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
 }
 
 /* Map Preview - Large, rectangular landscape shape */
 .celebration__map {
-  width: min(480px, 70vw);
-  height: min(300px, 40vh);
+  width: min(600px, 80vw);
+  aspect-ratio: 4 / 3;
+  height: auto;
   border: 4px solid var(--wa-gold-sandy);
   border-radius: 0;
   overflow: hidden;
@@ -579,6 +970,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: top;
 }
 
 /* Info */
@@ -685,24 +1077,6 @@
     0 0 50px rgba(255, 215, 0, 0.2);
 }
 
-/* Back link - choose different map */
-.celebration__back-link {
-  background: transparent;
-  border: none;
-  color: var(--wa-text-secondary);
-  font-family: var(--wa-font-body);
-  font-size: 16px;
-  font-weight: 400;
-  cursor: pointer;
-  padding: 8px 16px;
-  margin-top: 8px;
-  transition: all 0.2s;
-}
-
-.celebration__back-link:hover {
-  color: var(--wa-gold-sandy);
-  text-decoration: underline;
-}
 
 /* Responsive - Tablet */
 @media (max-width: 1024px) {
@@ -725,12 +1099,13 @@
   }
 
   .map-overlay__grid-card-author {
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .celebration__map {
-    width: 280px;
-    height: 280px;
+    width: min(400px, 85vw);
+    aspect-ratio: 4 / 3;
+    height: auto;
   }
 
   .celebration__title {
@@ -777,7 +1152,7 @@
   }
 
   .map-overlay__grid-card-author {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .map-overlay__actions {
@@ -799,8 +1174,9 @@
   }
 
   .celebration__map {
-    width: 240px;
-    height: 240px;
+    width: min(320px, 85vw);
+    aspect-ratio: 4 / 3;
+    height: auto;
   }
 
   .celebration__trophy {
@@ -867,7 +1243,8 @@
 
   .celebration__map {
     width: min(360px, 85vw);
-    height: min(220px, 30vh);
+    aspect-ratio: 4 / 3;
+    height: auto;
   }
 
   .celebration__trophy {

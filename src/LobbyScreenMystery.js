@@ -1,12 +1,25 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './LobbyScreenMystery.css';
 import MysteryMapChallenge from './components/MysteryMapChallenge';
-import mapPreview from './assets/wayarena-map-preview.png';
+
+const MAP_SLIDES = [
+  `${process.env.PUBLIC_URL}/map-purple.png`,
+  `${process.env.PUBLIC_URL}/map-lava.png`,
+  `${process.env.PUBLIC_URL}/map-crystal.png`,
+];
 
 const LobbyScreenMystery = () => {
   const [isChallengeOpen, setIsChallengeOpen] = useState(false);
   const [defaultTab, setDefaultTab] = useState('create');
+  const [activeMap, setActiveMap] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setActiveMap((prev) => (prev + 1) % MAP_SLIDES.length);
+    }, 2800);
+    return () => clearInterval(id);
+  }, []);
 
   const handlePlayWayarena = useCallback(() => {
     console.log('Playing Wayarena default map');
@@ -44,7 +57,17 @@ const LobbyScreenMystery = () => {
           onClick={handlePlayWayarena}
         >
           <div className="hero-map-card__preview">
-            <img src={mapPreview} alt="Wayarena" />
+            {MAP_SLIDES.map((src, i) => (
+              <img
+                key={src}
+                src={src}
+                alt={`Map ${i + 1}`}
+                className={`hero-map-card__map-slide ${i === activeMap ? 'active' : ''}`}
+              />
+            ))}
+            <div className="hero-map-char">
+              <div className="hero-map-char__sprite" />
+            </div>
           </div>
           <div className="hero-map-card__info">
             <span className="hero-map-card__label">DEFAULT MAP</span>
