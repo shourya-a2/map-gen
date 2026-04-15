@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './LobbyScreenMystery.css';
-import MysteryMapChallenge from './components/MysteryMapChallenge';
+import MysteryMapChallenge from '../../components/student/MysteryMapChallenge';
 
 const MAP_SLIDES = [
   `${process.env.PUBLIC_URL}/map-purple.png`,

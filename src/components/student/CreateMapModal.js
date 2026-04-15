@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './CreateMapModal.css';
-import { MOCK_THUMBNAILS, EXAMPLE_PROMPTS } from '../data/mockData';
-import { useMapStore } from '../hooks/useMapStore';
+import { MOCK_THUMBNAILS, EXAMPLE_PROMPTS } from '../../data/mockData';
+import { useMapStore } from '../../hooks/useMapStore';
 import {
   THEME_PALETTES,
   CHIP_PREVIEWS,
@@ -25,7 +25,7 @@ import {
   CheckIcon,
   MAX_CHARS,
   MAX_SLOTS,
-} from '../utils/mapCreatorUtils';
+} from '../../utils/mapCreatorUtils';
 
 const CreateMapModal = ({ onClose, onMapGenerated, getMapButtonPosition, onFlyComplete, initialTab = 'create' }) => {
   const { maps, addMap, deleteMap, isAtLimit, maxMaps } = useMapStore();

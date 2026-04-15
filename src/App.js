@@ -1,23 +1,23 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import LobbyScreen from './LobbyScreen';
-import LobbyScreenSideSheet from './LobbyScreenSideSheet';
-import CompetitionDemoPage from './pages/CompetitionDemoPage';
-import LobbyScreenMystery from './LobbyScreenMystery';
-import LobbyScreenTeacher from './LobbyScreenTeacher';
-import LobbyScreenTeacher2 from './LobbyScreenTeacher2';
+import HomePage from './screens/home/HomePage';
+import LobbyModal from './screens/student/LobbyModal';
+import LobbySideSheet from './screens/student/LobbySideSheet';
+import LobbyCompetition from './screens/student/LobbyCompetition';
+import LobbyMystery from './screens/student/LobbyMystery';
+import TeacherLobby from './screens/teacher/TeacherLobby';
+import TeacherLobbyV2 from './screens/teacher/TeacherLobbyV2';
 
 const App = () => {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/modal" element={<LobbyScreen />} />
-      <Route path="/side-sheet" element={<LobbyScreenSideSheet />} />
-      <Route path="/competition" element={<CompetitionDemoPage />} />
-      <Route path="/mystery" element={<LobbyScreenMystery />} />
-      <Route path="/teacher" element={<LobbyScreenTeacher />} />
-      <Route path="/teacher2" element={<LobbyScreenTeacher2 />} />
+      <Route path="/modal" element={<LobbyModal />} />
+      <Route path="/side-sheet" element={<LobbySideSheet />} />
+      <Route path="/competition" element={<LobbyCompetition />} />
+      <Route path="/mystery" element={<LobbyMystery />} />
+      <Route path="/teacher" element={<TeacherLobby />} />
+      <Route path="/teacher2" element={<TeacherLobbyV2 />} />
     </Routes>
   );
 };

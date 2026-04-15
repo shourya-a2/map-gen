@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './LobbyScreenTeacher.css';
-import MapCarousel, { MOCK_SUBMISSIONS } from './components/MapCarousel';
+import MapCarousel, { MOCK_SUBMISSIONS } from '../../components/teacher/MapCarousel';
 
 const PARTICLE_COLORS = ['#FFD700', '#FFA500', '#FFE44D', '#FFCC00'];
 

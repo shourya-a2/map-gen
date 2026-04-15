@@ -1,99 +1,13 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './LobbyScreen.css';
-import { MOCK_PLAYERS, HOST_PLAYER, DEFAULT_MAPS } from './data/mockData';
-import CreateMapSideSheet from './components/CreateMapSideSheet';
-import MapCarousel from './components/MapCarousel';
-import CharacterStage from './components/CharacterStage';
-import { useMapStore } from './hooks/useMapStore';
-
-// Simple character sprite component
-const CharacterSprite = ({ style = 'ghost', size = 80 }) => {
-  const styles = {
-    ghost: { hair: '#00CED1', skin: '#FFFFFF', outfit: '#FFFFFF', accessory: '#FFD700' },
-    explorer: { hair: '#8B4513', skin: '#FFDAB9', outfit: '#D2691E', accessory: '#FFD700' },
-    nerd: { hair: '#4A4A4A', skin: '#F5DEB3', outfit: '#2F4F4F', accessory: '#87CEEB' },
-    punk: { hair: '#00CED1', skin: '#FFE4E1', outfit: '#2F4F4F', accessory: '#FF69B4' },
-    schoolgirl: { hair: '#00CED1', skin: '#FFE4E1', outfit: '#FFFFFF', accessory: '#FF6347' },
-    cowboy: { hair: '#DAA520', skin: '#DEB887', outfit: '#8B4513', accessory: '#FFD700' },
-    cowgirl: { hair: '#DAA520', skin: '#FFDAB9', outfit: '#D2691E', accessory: '#FF69B4' },
-    ninja: { hair: '#1C1C1C', skin: '#F5DEB3', outfit: '#1C1C1C', accessory: '#FF0000' },
-  };
-  
-  const colors = styles[style] || styles.ghost;
-  const scale = size / 80;
-  
-  return (
-    <svg width={size} height={size * 1.25} viewBox="0 0 80 100" style={{ imageRendering: 'auto' }}>
-      {/* Hair/Head top */}
-      <ellipse cx="40" cy="25" rx="22" ry="18" fill={colors.hair} />
-      {/* Face */}
-      <ellipse cx="40" cy="32" rx="18" ry="15" fill={colors.skin} />
-      {/* Eyes */}
-      <ellipse cx="34" cy="30" rx="3" ry="4" fill="#333" />
-      <ellipse cx="46" cy="30" rx="3" ry="4" fill="#333" />
-      {/* Body */}
-      <rect x="25" y="45" width="30" height="35" rx="8" fill={colors.outfit} />
-      {/* Arms */}
-      <rect x="15" y="48" width="12" height="8" rx="4" fill={colors.skin} />
-      <rect x="53" y="48" width="12" height="8" rx="4" fill={colors.skin} />
-      {/* Legs */}
-      <rect x="28" y="78" width="10" height="18" rx="4" fill={colors.outfit} />
-      <rect x="42" y="78" width="10" height="18" rx="4" fill={colors.outfit} />
-      {/* Accessory (hat/glasses indicator) */}
-      <circle cx="40" cy="12" r="6" fill={colors.accessory} opacity="0.8" />
-    </svg>
-  );
-};
-
-// Player avatar component
-const PlayerAvatar = ({ player, index }) => {
-  return (
-    <motion.div 
-      className="player-avatar"
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: index * 0.05, duration: 0.3 }}
-    >
-      <div className="player-avatar__sprite">
-        <CharacterSprite style={player.avatar} size={70} />
-      </div>
-      <span className="player-avatar__name">{player.name}</span>
-    </motion.div>
-  );
-};
-
-// Icons
-const PlusIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-    <path d="M12 5v14M5 12h14" />
-  </svg>
-);
-
-const UsersIcon = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-  </svg>
-);
-
-const MenuIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M4 6h16M4 12h16M4 18h16" />
-  </svg>
-);
-
-const ExpandIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-  </svg>
-);
-
-const InfoIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <circle cx="12" cy="12" r="10" />
-    <path d="M12 16v-4M12 8h.01" />
-  </svg>
-);
+import { MOCK_PLAYERS, HOST_PLAYER, DEFAULT_MAPS } from '../../data/mockData';
+import CreateMapSideSheet from '../../components/student/CreateMapSideSheet';
+import MapCarousel from '../../components/teacher/MapCarousel';
+import CharacterStage from '../../components/shared/CharacterStage';
+import PlayerAvatar from '../../components/shared/PlayerAvatar';
+import { PlusIcon, UsersIcon, MenuIcon, ExpandIcon, InfoIcon } from '../../components/shared/icons';
+import { useMapStore } from '../../hooks/useMapStore';
 
 const LobbyScreenSideSheet = () => {
   const [isSideSheetOpen, setIsSideSheetOpen] = useState(false);

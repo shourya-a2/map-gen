@@ -327,7 +327,7 @@
   padding: 12px 20px 24px;
   position: relative;
   z-index: 2;
-  overflow-y: auto;
+  overflow: hidden;
   min-height: 0;
 }
 
@@ -522,6 +522,16 @@
 .aura-generate-row .wa-btn-primary {
   flex: 1;
   justify-content: space-between;
+}
+
+.aura-coins-disclaimer {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--wa-font-body);
+  font-size: 11px;
+  color: var(--wa-text-disabled);
+  text-align: center;
+  letter-spacing: 0.3px;
 }
 
 .aura-coins-warning {
@@ -1468,6 +1478,123 @@
 @keyframes scanGlow {
   from { box-shadow: 0 0 6px rgba(255, 200, 0, 0.3), inset 0 0 20px rgba(255, 200, 0, 0.04); }
   to   { box-shadow: 0 0 22px rgba(255, 200, 0, 0.75), inset 0 0 40px rgba(255, 200, 0, 0.12); }
+}
+
+/* ═══════════════════════════════════════════
+   UPPER / LOWER REGION — No Layout Shift
+   ═══════════════════════════════════════════ */
+.aura-upper-region {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+.aura-lower-region {
+  flex-shrink: 0;
+  padding-top: 8px;
+}
+
+/* ═══════════════════════════════════════════
+   FEEDBACK BOX — Visual feedback during generation
+   ═══════════════════════════════════════════ */
+.aura-feedback-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 20px;
+  border: 2px solid var(--wa-border-gold);
+  background: var(--wa-bg-brown);
+  box-shadow: var(--wa-shadow-pixel-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.aura-feedback-box__icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.aura-feedback-box__icon {
+  font-size: 32px;
+  display: inline-block;
+}
+
+.aura-feedback-box__ring {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border: 2px solid var(--wa-gold-primary);
+  border-radius: 50%;
+  animation: auraRingPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes auraRingPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.2); opacity: 0.15; }
+}
+
+.aura-feedback-box__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.aura-feedback-box__progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--wa-gold-sandy), var(--wa-gold-primary), var(--wa-gold-sandy));
+  box-shadow: var(--wa-shadow-glow-gold);
+}
+
+/* ═══════════════════════════════════════════
+   TICKER — Replaces button during generation
+   ═══════════════════════════════════════════ */
+.aura-ticker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 14px 24px;
+  background: var(--wa-bg-brown);
+  border: 2px solid var(--wa-gold-primary);
+  box-shadow: 0 0 16px rgba(255, 215, 0, 0.3);
+  min-height: 52px;
+}
+
+.aura-ticker__message {
+  font-family: var(--wa-font-display);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--wa-gold-primary);
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════
+   RESET LINK — "Create a different map"
+   ═══════════════════════════════════════════ */
+.aura-reset-link {
+  background: none;
+  border: none;
+  font-family: var(--wa-font-body);
+  font-size: 13px;
+  color: var(--wa-text-secondary);
+  cursor: pointer;
+  padding: 10px 0;
+  text-align: center;
+  width: 100%;
+  transition: color var(--wa-transition-fast);
+  opacity: 0.7;
+}
+
+.aura-reset-link:hover {
+  color: var(--wa-gold-light);
+  opacity: 1;
 }
 
 /* ═══════════════════════════════════════════

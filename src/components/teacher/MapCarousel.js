@@ -287,7 +287,7 @@ const MapCarousel = ({
               transition={{ duration: 0.35, delay: 0.05 }}
             >
               <h2 className="map-overlay__title">
-                {submissions.length === 0 ? 'Select an Arena' : 'Start with Arena'}
+                Select an Arena
               </h2>
               <div className="map-overlay__counter">
                 {submissions.length === 0
