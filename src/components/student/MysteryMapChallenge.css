@@ -341,6 +341,18 @@
   gap: 14px;
 }
 
+/* Input label */
+.aura-input-label {
+  display: block;
+  font-family: var(--wa-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--wa-gold-sandy);
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
 /* Input */
 .aura-input-wrap {
   position: relative;
@@ -348,7 +360,7 @@
 
 .aura-input {
   width: 100%;
-  min-height: 80px;
+  min-height: 90px;
   padding: 14px 16px;
   padding-bottom: 28px;
   background: var(--wa-bg-brown-dark);
@@ -427,24 +439,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 12px;
-  border: 2px solid var(--wa-border-gold);
-  background: var(--wa-bg-brown);
+  padding: 7px 10px;
+  border: 1px solid var(--wa-border-gold);
+  background: transparent;
   color: var(--wa-text-secondary);
   font-family: var(--wa-font-body);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   cursor: pointer;
   transition: all var(--wa-transition-fast);
   white-space: nowrap;
-  box-shadow: var(--wa-shadow-pixel-sm);
+  opacity: 0.75;
 }
 
 .aura-pill:hover {
-  background: var(--wa-gold-sandy);
-  color: var(--wa-text-dark);
-  transform: translate(-2px, -2px);
-  box-shadow: var(--wa-shadow-pixel);
+  background: rgba(212,169,106,0.15);
+  border-color: var(--wa-gold-sandy);
+  color: var(--wa-gold-light);
+  opacity: 1;
 }
 
 .aura-pill--active {
@@ -1595,6 +1607,467 @@
 .aura-reset-link:hover {
   color: var(--wa-gold-light);
   opacity: 1;
+}
+
+.aura-reset-link__coins {
+  font-size: 11px;
+  color: var(--wa-gold-primary);
+  margin-left: 4px;
+}
+
+/* ═══════════════════════════════════════════
+   CONTEXT HINT — above title in idle
+   ═══════════════════════════════════════════ */
+.aura-context-hint {
+  font-family: var(--wa-font-body);
+  font-size: 12px;
+  color: var(--wa-gold-sandy);
+  text-align: center;
+  margin: 0 0 8px;
+  opacity: 0.85;
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════
+   GENERATION BUDGET — remaining gen count
+   ═══════════════════════════════════════════ */
+.aura-gen-budget {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--wa-font-body);
+  font-size: 11px;
+  letter-spacing: 0.3px;
+  color: var(--wa-text-disabled);
+  text-align: center;
+}
+
+/* ═══════════════════════════════════════════
+   PLAYER COUNT BADGE
+   ═══════════════════════════════════════════ */
+.aura-player-count {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid var(--wa-border-gold);
+}
+
+.aura-player-count__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--wa-success-green);
+  box-shadow: 0 0 6px var(--wa-success-green);
+  animation: playerDotPulse 2s ease-in-out infinite;
+}
+
+@keyframes playerDotPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.aura-player-count__text {
+  font-family: var(--wa-font-display);
+  font-size: 7px;
+  letter-spacing: 0.8px;
+  color: var(--wa-success-green-light);
+}
+
+/* ═══════════════════════════════════════════
+   TABS LOCKED STATE
+   ═══════════════════════════════════════════ */
+.aura-tabs--locked {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.aura-tab--locked {
+  cursor: not-allowed;
+}
+
+.aura-tab__generating-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--wa-gold-primary);
+  margin-left: 6px;
+  animation: generatingDotPulse 0.8s ease-in-out infinite;
+  vertical-align: middle;
+}
+
+@keyframes generatingDotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.6); }
+}
+
+/* ═══════════════════════════════════════════
+   SUGGESTIONS LABEL
+   ═══════════════════════════════════════════ */
+.aura-suggestions__label {
+  font-family: var(--wa-font-body);
+  font-size: 11px;
+  color: var(--wa-text-secondary);
+  opacity: 0.7;
+}
+
+/* ═══════════════════════════════════════════
+   FOG REVEAL GRID (during generation)
+   ═══════════════════════════════════════════ */
+.aura-fog-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  gap: 2px;
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.aura-fog-grid__cell {
+  border-radius: 1px;
+}
+
+/* ═══════════════════════════════════════════
+   MAP PREVIEW (complete state)
+   ═══════════════════════════════════════════ */
+.aura-preview-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+  padding: 8px 0;
+}
+
+.aura-map-preview {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border: 3px solid var(--wa-gold-sandy);
+  box-shadow: var(--wa-shadow-pixel-lg);
+  overflow: hidden;
+}
+
+.aura-map-preview__grid {
+  --rarity-color: var(--wa-gold-sandy);
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  gap: 2px;
+  flex: 1;
+  padding: 4px;
+  background: var(--wa-bg-dark);
+}
+
+.aura-map-preview__cell {
+  border-radius: 1px;
+  transition: opacity 0.15s;
+}
+
+.aura-map-preview__label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--wa-bg-brown);
+  border-top: 2px solid var(--wa-border-gold);
+  flex-shrink: 0;
+}
+
+.aura-map-preview__name {
+  font-family: var(--wa-font-display);
+  font-size: 8px;
+  letter-spacing: 0.5px;
+  color: var(--wa-gold-light);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70%;
+}
+
+.aura-map-preview__rarity {
+  font-family: var(--wa-font-display);
+  font-size: 7px;
+  letter-spacing: 1px;
+}
+
+.aura-preview-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.aura-preview-meta__theme {
+  font-family: var(--wa-font-display);
+  font-size: 7px;
+  letter-spacing: 1px;
+  color: var(--wa-text-secondary);
+}
+
+/* ═══════════════════════════════════════════
+   SUBMITTED SUCCESS STATE
+   ═══════════════════════════════════════════ */
+.aura-submitted-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 16px;
+  text-align: center;
+  padding: 20px;
+}
+
+.aura-submitted-check {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 3px solid var(--wa-success-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: var(--wa-success-green);
+  box-shadow:
+    0 0 20px rgba(34, 197, 94, 0.4),
+    0 0 60px rgba(34, 197, 94, 0.15);
+  font-family: system-ui, sans-serif;
+  font-weight: 300;
+}
+
+.aura-submitted-message {
+  font-family: var(--wa-font-display);
+  font-size: 9px;
+  color: var(--wa-gold-light);
+  line-height: 1.7;
+  margin: 0;
+  max-width: 280px;
+}
+
+.aura-submitted-context {
+  font-family: var(--wa-font-body);
+  font-size: 12px;
+  color: var(--wa-text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════
+   SHEET FLASH OVERLAY
+   ═══════════════════════════════════════════ */
+.aura-sheet__flash {
+  position: absolute;
+  inset: 0;
+  z-index: 900;
+  pointer-events: none;
+  border-radius: 0;
+}
+
+/* ═══════════════════════════════════════════
+   MAP GRID  (replaces MapPreview + FogGrid)
+   ═══════════════════════════════════════════ */
+.aura-map-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  gap: 2px;
+  width: 100%;
+  background: var(--wa-bg-dark);
+}
+
+.aura-map-grid--normal {
+  flex: 1;
+  min-height: 0;
+  padding: 4px;
+}
+
+.aura-map-grid--large {
+  width: 100%;
+  height: 100%;
+  padding: 6px;
+  gap: 3px;
+}
+
+.aura-map-grid__cell {
+  border-radius: 1px;
+  width: 100%;
+  height: 100%;
+}
+
+/* fog grid keeps same structure */
+.aura-fog-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  gap: 2px;
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.aura-fog-grid__cell {
+  border-radius: 1px;
+}
+
+/* ═══════════════════════════════════════════
+   FULL-SCREEN REVEAL OVERLAY
+   ═══════════════════════════════════════════ */
+.aura-reveal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    rgba(0,0,0,0.92) 0%,
+    rgba(0,0,0,0.98) 100%
+  );
+}
+
+.aura-reveal-overlay__flash {
+  position: absolute;
+  inset: 0;
+  background: white;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.aura-reveal-overlay__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: min(380px, 90vw);
+  position: relative;
+  z-index: 2;
+}
+
+.aura-reveal-overlay__rarity {
+  font-family: var(--wa-font-display);
+  font-size: clamp(11px, 3vw, 15px);
+  letter-spacing: 3px;
+  text-align: center;
+  animation: rarityPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes rarityPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.7; }
+}
+
+.aura-reveal-overlay__map {
+  width: 100%;
+  aspect-ratio: 1;
+  border: 3px solid var(--rarity-color, #d4a96a);
+  box-shadow:
+    0 0 32px var(--rarity-glow, rgba(212,169,106,0.5)),
+    0 0 80px var(--rarity-glow, rgba(212,169,106,0.2)),
+    inset 0 0 20px rgba(0,0,0,0.5);
+  overflow: hidden;
+  animation: revealMapGlow 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes revealMapGlow {
+  from { box-shadow: 0 0 24px var(--rarity-glow, rgba(212,169,106,0.4)),  0 0 60px var(--rarity-glow, rgba(212,169,106,0.15)); }
+  to   { box-shadow: 0 0 48px var(--rarity-glow, rgba(212,169,106,0.75)), 0 0 100px var(--rarity-glow, rgba(212,169,106,0.3)); }
+}
+
+.aura-reveal-overlay__name {
+  font-family: var(--wa-font-display);
+  font-size: clamp(9px, 2.5vw, 12px);
+  color: var(--wa-gold-light);
+  letter-spacing: 1.5px;
+  text-align: center;
+  margin: 0;
+}
+
+/* ═══════════════════════════════════════════
+   CONFETTI
+   ═══════════════════════════════════════════ */
+.aura-confetti-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 950;
+}
+
+.aura-confetti {
+  position: absolute;
+  top: 0;
+  width: 8px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+/* ═══════════════════════════════════════════
+   SOCIAL PROOF FEED
+   ═══════════════════════════════════════════ */
+.aura-social-feed {
+  position: relative;
+  z-index: 20;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  background: rgba(0,0,0,0.3);
+  border-top: 1px solid var(--wa-border-gold);
+}
+
+.aura-social-feed__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--wa-success-green);
+  flex-shrink: 0;
+  box-shadow: 0 0 6px var(--wa-success-green);
+  animation: playerDotPulse 2s ease-in-out infinite;
+}
+
+.aura-social-feed__text {
+  font-family: var(--wa-font-body);
+  font-size: 11px;
+  color: var(--wa-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ═══════════════════════════════════════════
+   MOCKUP IMAGE — generation & preview
+   ═══════════════════════════════════════════ */
+.aura-mockup-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.aura-mockup-img--preview {
+  /* sharp version in preview state — transitions handled inline */
+}
+
+/* ═══════════════════════════════════════════
+   COIN VALUE ANIMATION
+   ═══════════════════════════════════════════ */
+.aura-coins__value {
+  font-family: var(--wa-font-body);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--wa-gold-primary);
+  display: inline-block;
 }
 
 /* ═══════════════════════════════════════════

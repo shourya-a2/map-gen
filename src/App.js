@@ -5,6 +5,9 @@ import LobbyModal from './screens/student/LobbyModal';
 import LobbySideSheet from './screens/student/LobbySideSheet';
 import LobbyCompetition from './screens/student/LobbyCompetition';
 import LobbyMystery from './screens/student/LobbyMystery';
+import TugOfWarEntry          from './screens/student/TugOfWarEntry';
+import LobbyTugOfWar          from './screens/student/LobbyTugOfWar';
+import LobbyTugOfWarExpanded  from './screens/student/LobbyTugOfWarExpanded';
 import TeacherLobby from './screens/teacher/TeacherLobby';
 import TeacherLobbyV2 from './screens/teacher/TeacherLobbyV2';
 
@@ -16,6 +19,9 @@ const App = () => {
       <Route path="/side-sheet" element={<LobbySideSheet />} />
       <Route path="/competition" element={<LobbyCompetition />} />
       <Route path="/mystery" element={<LobbyMystery />} />
+      <Route path="/tug-of-war"             element={<TugOfWarEntry />} />
+      <Route path="/tug-of-war/side-sheet" element={<LobbyTugOfWar />} />
+      <Route path="/tug-of-war/expanded"   element={<LobbyTugOfWarExpanded />} />
       <Route path="/teacher" element={<TeacherLobby />} />
       <Route path="/teacher2" element={<TeacherLobbyV2 />} />
     </Routes>

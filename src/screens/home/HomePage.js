@@ -297,6 +297,35 @@ const HomePage = () => {
         </div>
       </motion.div>
 
+      {/* Tug of War Section */}
+      <motion.div
+        className="mystery-section"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.55 }}
+      >
+        <div className="mystery-card">
+          <div className="mystery-card__content">
+            <span className="mystery-badge" style={{ background:'#e63946' }}>TUG OF WAR</span>
+            <h3>Battlefield Background Designer</h3>
+            <p>
+              Design the stage for the tug-of-war battle. Describe a scene —
+              pirate beach, magic castle, volcano crater — and paint the battlefield
+              your classmates will fight on.
+            </p>
+            <ul className="mystery-features">
+              <li>⚔️ Scene-layered pixel backgrounds</li>
+              <li>🎨 Theme detection from your description</li>
+              <li>🏆 Waiting room after submission</li>
+              <li>🎉 Battle fanfare on reveal</li>
+            </ul>
+            <Link to="/tug-of-war" className="test-button mystery-btn" style={{ background:'#e63946' }}>
+              Paint the Battlefield
+            </Link>
+          </div>
+        </div>
+      </motion.div>
+
       {/* Teacher Dashboard Section */}
       <motion.div 
         className="teacher-section"

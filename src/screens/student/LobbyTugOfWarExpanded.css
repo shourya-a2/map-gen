@@ -1,0 +1,21 @@
+.tow-expanded-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.tow-expanded-badge {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 9999;
+  padding: 6px 12px;
+  background: rgba(255,228,48,0.15);
+  border: 1px solid rgba(255,228,48,0.5);
+  border-radius: 4px;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 7px;
+  letter-spacing: 1px;
+  color: #ffe430;
+  pointer-events: none;
+}

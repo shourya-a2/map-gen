@@ -194,6 +194,57 @@
 }
 
 /* =============================================
+   HERO CARD LIVE BADGE
+   ============================================= */
+
+.hero-map-card__live-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 20px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+  backdrop-filter: blur(4px);
+}
+
+.hero-map-card__live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22C55E;
+  box-shadow: 0 0 6px #22C55E;
+  animation: liveDotPulse 1.5s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes liveDotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.7); }
+}
+
+/* =============================================
+   CONTEXT HINT
+   ============================================= */
+
+.maps-context-hint {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.45);
+  text-align: center;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0 4px;
+}
+
+/* =============================================
    ACTION BUTTONS
    ============================================= */
 
@@ -230,6 +281,40 @@
 .maps-action-btn--secondary:hover {
   background: linear-gradient(145deg, rgba(40, 38, 50, 0.75), rgba(30, 28, 40, 0.85));
   color: rgba(255, 255, 255, 0.85);
+}
+
+/* =============================================
+   LOBBY ACTIVITY FEED
+   ============================================= */
+
+.maps-activity {
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.maps-activity__event {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 6px;
+  width: 100%;
+}
+
+.maps-activity__icon {
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.maps-activity__text {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.4;
 }
 
 /* =============================================
