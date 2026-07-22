@@ -8,6 +8,45 @@ const MAP_IMAGES = [
   '/map-crystal.png',
 ];
 
+// ToW battlefield mockup images (imported as assets)
+// These are referenced by path; the actual import happens at the screen level.
+// We expose them as a named export for use in TeacherLobbyTugOfWar.
+export const TOW_MAP_IMAGES = [
+  require('../../assets/image 1.png'),
+  require('../../assets/image 2.png'),
+  require('../../assets/image 3.png'),
+  require('../../assets/image 4.png'),
+  require('../../assets/image 5.png'),
+  require('../../assets/image 6.png'),
+];
+
+export const TOW_SUBMISSIONS = [
+  { id: 0,  studentName: 'Default',          mapTitle: 'Desert Dunes',     mapImage: TOW_MAP_IMAGES[0] },
+  { id: 2,  studentName: 'Sarah Miller',     mapTitle: 'Volcano Crater',   mapImage: TOW_MAP_IMAGES[1] },
+  { id: 3,  studentName: 'Emma Davis',       mapTitle: 'Frozen Tundra',    mapImage: TOW_MAP_IMAGES[2] },
+  { id: 4,  studentName: 'James Wilson',     mapTitle: 'Pirate Beach',     mapImage: TOW_MAP_IMAGES[3] },
+  { id: 5,  studentName: 'Marcus Johnson',   mapTitle: 'Storm Cliffs',     mapImage: TOW_MAP_IMAGES[4] },
+  { id: 6,  studentName: 'Olivia Brown',     mapTitle: 'Magic Castle',     mapImage: TOW_MAP_IMAGES[5] },
+  { id: 7,  studentName: 'Liam Garcia',      mapTitle: 'Jungle Canopy',    mapImage: TOW_MAP_IMAGES[0] },
+  { id: 8,  studentName: 'Sophia Martinez',  mapTitle: 'Lava Fields',      mapImage: TOW_MAP_IMAGES[1] },
+  { id: 9,  studentName: 'Noah Anderson',    mapTitle: 'Arctic Wastes',    mapImage: TOW_MAP_IMAGES[2] },
+  { id: 10, studentName: 'Isabella Thomas',  mapTitle: 'Treasure Island',  mapImage: TOW_MAP_IMAGES[3] },
+  { id: 11, studentName: 'Ethan Jackson',    mapTitle: 'Thunder Pass',     mapImage: TOW_MAP_IMAGES[4] },
+  { id: 12, studentName: 'Mia White',        mapTitle: 'Wizard Tower',     mapImage: TOW_MAP_IMAGES[5] },
+  { id: 13, studentName: 'Lucas Brown',      mapTitle: 'Rope Bridge',      mapImage: TOW_MAP_IMAGES[0] },
+  { id: 14, studentName: 'Ava Taylor',       mapTitle: 'Burning Sands',    mapImage: TOW_MAP_IMAGES[1] },
+  { id: 15, studentName: 'Mason Lee',        mapTitle: 'Snowfield',        mapImage: TOW_MAP_IMAGES[2] },
+  { id: 16, studentName: 'Charlotte Harris', mapTitle: 'Pirate Cove',      mapImage: TOW_MAP_IMAGES[3] },
+  { id: 17, studentName: 'Logan Clark',      mapTitle: 'Dark Forest',      mapImage: TOW_MAP_IMAGES[4] },
+  { id: 18, studentName: 'Amelia Lewis',     mapTitle: 'Mystic Ruins',     mapImage: TOW_MAP_IMAGES[5] },
+  { id: 19, studentName: 'Oliver Walker',    mapTitle: 'Dragon Lair',      mapImage: TOW_MAP_IMAGES[0] },
+  { id: 20, studentName: 'Harper Hall',      mapTitle: 'Ocean Trench',     mapImage: TOW_MAP_IMAGES[1] },
+  { id: 21, studentName: 'Elijah Young',     mapTitle: 'Sky Temple',       mapImage: TOW_MAP_IMAGES[2] },
+  { id: 22, studentName: 'Evelyn King',      mapTitle: 'Sand Dunes',       mapImage: TOW_MAP_IMAGES[3] },
+  { id: 23, studentName: 'William Wright',   mapTitle: 'Ember Valley',     mapImage: TOW_MAP_IMAGES[4] },
+  { id: 24, studentName: 'Abigail Scott',    mapTitle: 'Crystal Peaks',    mapImage: TOW_MAP_IMAGES[5] },
+];
+
 export const MOCK_SUBMISSIONS = [
   { id: 0, studentName: 'Default', mapTitle: 'Desert Dunes', mapImage: '/default-map.png' },
   { id: 2, studentName: 'Sarah Miller', mapTitle: 'Lava Fortress', mapImage: MAP_IMAGES[1] },
@@ -48,6 +87,9 @@ const MapCarousel = ({
   onSkipAndStart,
   showInterceptText = false,
   onInterceptDone,
+  overlayTitle = 'Select an Arena',
+  overlayBackground = null,
+  overlayClassName = '',
 }) => {
   const [submissions] = useState(initialSubmissions);
   const [selectedMapId, setSelectedMapId] = useState(
@@ -287,7 +329,7 @@ const MapCarousel = ({
               transition={{ duration: 0.35, delay: 0.05 }}
             >
               <h2 className="map-overlay__title">
-                Select an Arena
+                {overlayTitle}
               </h2>
               <div className="map-overlay__counter">
                 {submissions.length === 0

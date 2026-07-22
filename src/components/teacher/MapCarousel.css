@@ -1297,3 +1297,43 @@
   scrollbar-width: thin;
   scrollbar-color: var(--wa-gold-sandy) var(--wa-bg-brown);
 }
+
+/* ═══════════════════════════════════════════
+   ToW PURPLE THEME — scoped to .map-overlay--tow
+   Redefines all brown/dark tokens to purple
+   ═══════════════════════════════════════════ */
+.map-overlay--tow {
+  --wa-bg-dark:            #0d0520;
+  --wa-bg-brown:           rgba(76, 29, 149, 0.85);
+  --wa-bg-brown-light:     rgba(91, 33, 182, 0.9);
+  --wa-text-dark:          #0d0520;
+  --wa-border-gold:        rgba(34, 211, 238, 0.25);
+  --wa-border-gold-strong: rgba(34, 211, 238, 0.55);
+  --wa-gold-sandy:         #22d3ee;
+  --wa-gold-dark:          #0ea5e9;
+  background-color: #0d0520;
+}
+
+/* Hardcoded rgba values that don't use variables */
+.map-overlay--tow .map-overlay__header {
+  background: rgba(13, 5, 32, 0.92) !important;
+}
+.map-overlay--tow .map-overlay__bottom-bar {
+  background: rgba(10, 8, 20, 0.95) !important;
+}
+.map-overlay--tow .map-overlay__grid-container {
+  background: transparent !important;
+}
+.map-overlay--tow .map-overlay__roll-overlay {
+  background: rgba(13, 5, 32, 0.95) !important;
+}
+.map-overlay--tow .map-overlay__celebration {
+  background: rgba(13, 5, 32, 0.96) !important;
+}
+.map-overlay--tow .map-overlay__grid-card-name {
+  background: linear-gradient(transparent, rgba(13, 5, 32, 0.92)) !important;
+}
+.map-overlay--tow .map-overlay__grid-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(124, 58, 237, 0.6) !important;
+  border-color: #0d0520 !important;
+}

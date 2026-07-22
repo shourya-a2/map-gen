@@ -123,6 +123,13 @@ const BG_SUGGESTIONS = [
   'Frozen Tundra',
 ];
 
+const SUBMITTED_STATUSES = [
+  '⚔️ Your battlefield is in the arena',
+  '👀 Teacher is reviewing all submissions',
+  '🏆 Waiting to be chosen…',
+  '⚔️ The battle will begin soon',
+];
+
 const PLACEHOLDER_EXAMPLES = [
   'Two teams on a crumbling cliff edge',
   'Red team vs blue team in a lava field',
@@ -504,6 +511,9 @@ const MysteryReveal = ({ src, variant, onDone }) => {
       transition={{ duration: 0.3 }}
     >
       <div className="tow-mystery-stage">
+        {/* Rotating rays behind image — use asset */}
+        <img src={require('../../assets/Rays_Thumbnail.png')} alt="" className="tow-mystery-rays" />
+
         {/* Image */}
         <motion.img
           src={src}
@@ -554,15 +564,16 @@ const TugOfWarChallenge = ({
   const [phase,          setPhase]          = useState('idle');
   // genStage: 'idle-gif' | 'crossfade' | 'zoomin' | 'flash'
   const [genStage,       setGenStage]       = useState('idle-gif');
-  const [revealImgSrc,   setRevealImgSrc]   = useState(null);
-  const [currentBg,      setCurrentBg]      = useState(null);
-  const [tickerText,     setTickerText]     = useState('');
-  const [revealProgress, setRevealProgress] = useState(0);
-  const [shaking,        setShaking]        = useState(false);
-  const [confetti,       setConfetti]       = useState(null);
-  const [flyCoins,       setFlyCoins]       = useState(null);
-  const [socialMsg,      setSocialMsg]      = useState('');
-  const [placeholder,    setPlaceholder]    = useState('');
+  const [revealImgSrc,       setRevealImgSrc]       = useState(null);
+  const [currentBg,          setCurrentBg]          = useState(null);
+  const [tickerText,         setTickerText]         = useState('');
+  const [revealProgress,     setRevealProgress]     = useState(0);
+  const [shaking,            setShaking]            = useState(false);
+  const [confetti,           setConfetti]           = useState(null);
+  const [flyCoins,           setFlyCoins]           = useState(null);
+  const [socialMsg,          setSocialMsg]          = useState('');
+  const [placeholder,        setPlaceholder]        = useState('');
+  const [submittedStatusIdx, setSubmittedStatusIdx] = useState(0);
 
   const placeholderRef  = useRef({ idx: 0, char: 0, deleting: false, tid: null });
   const audioRef        = useRef(null);
@@ -621,6 +632,15 @@ const TugOfWarChallenge = ({
     socialTidRef.current = setTimeout(cycle, 2500);
     return () => clearTimeout(socialTidRef.current);
   }, [playerCount]);
+
+  // cycle submitted status messages
+  useEffect(() => {
+    if (phase !== 'submitted') return;
+    const id = setInterval(() => {
+      setSubmittedStatusIdx(p => (p + 1) % SUBMITTED_STATUSES.length);
+    }, 3500);
+    return () => clearInterval(id);
+  }, [phase]);
 
   const canGenerate   = prompt.trim().length > 0 && coins >= BG_GENERATION_COST;
   const generationsLeft = Math.floor(coins / BG_GENERATION_COST);
@@ -735,6 +755,7 @@ const TugOfWarChallenge = ({
     setCurrentBg(null);
     setRevealImgSrc(null);
     setGenStage('idle-gif');
+    setSubmittedStatusIdx(0);
     setPrompt('');
     setTickerText('');
     setRevealProgress(0);
@@ -896,6 +917,17 @@ const TugOfWarChallenge = ({
                 transition={{ duration: genStage === 'flash' ? 0.2 : 0.4 }}
               />
 
+              {/* Loader — dual spinning rings during generation wait */}
+              {(genStage === 'idle-gif' || genStage === 'crossfade') && (
+                <motion.div className="tow-gen-loader"
+                  initial={{ opacity:0 }} animate={{ opacity:1 }}
+                  exit={{ opacity:0 }} transition={{ duration:0.4 }}
+                >
+                  <div className="tow-gen-loader__ring" />
+                  <div className="tow-gen-loader__ring tow-gen-loader__ring--2" />
+                </motion.div>
+              )}
+
               {/* Ticker */}
               {tickerText && genStage !== 'flash' && (
                 <motion.div className="tow-gen-stage__ticker"
@@ -1018,18 +1050,58 @@ const TugOfWarChallenge = ({
 
                     {phase === 'submitted' && currentBg && (
                       <motion.div key="submitted" className="tow-submitted-area"
-                        initial={{ opacity:0, scale:0.9 }} animate={{ opacity:1, scale:1 }}
-                        exit={{ opacity:0 }} transition={{ duration:0.4 }}
+                        initial={{ opacity:0 }} animate={{ opacity:1 }}
+                        exit={{ opacity:0 }} transition={{ duration:0.35 }}
                       >
-                        <motion.div className="tow-submitted-check"
-                          initial={{ scale:0 }} animate={{ scale:1 }}
-                          transition={{ type:'spring', stiffness:400, damping:15, delay:0.1 }}
-                        >✓</motion.div>
-                        <p className="tow-submitted-message">"{currentBg.name}" is in the battle queue!</p>
+                        {/* Map image */}
+                        <motion.div className="tow-submitted-map"
+                          initial={{ scale:0.85, opacity:0 }}
+                          animate={{ scale:1, opacity:1 }}
+                          transition={{ type:'spring', stiffness:300, damping:22 }}
+                        >
+                          <img
+                            src={revealImgSrc || getMockupForTheme(currentBg.theme)}
+                            alt={currentBg.name}
+                            className="tow-submitted-map__img"
+                          />
+                          <div className="tow-submitted-map__label">
+                            <span className="tow-submitted-map__name">{currentBg.name}</span>
+                            <span className="tow-submitted-map__theme">{currentBg.theme.toUpperCase()}</span>
+                          </div>
+                        </motion.div>
+
+                        {/* Headline */}
+                        <motion.h2 className="tow-submitted-headline"
+                          initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }}
+                          transition={{ duration:0.3, delay:0.15 }}
+                        >
+                          ENTERED THE BATTLE!
+                        </motion.h2>
+
+                        {/* Cycling status */}
+                        <motion.div className="tow-submitted-status"
+                          initial={{ opacity:0 }} animate={{ opacity:1 }}
+                          transition={{ duration:0.3, delay:0.3 }}
+                        >
+                          <AnimatePresence mode="wait">
+                            <motion.span
+                              key={submittedStatusIdx}
+                              initial={{ opacity:0, y:6 }} animate={{ opacity:1, y:0 }}
+                              exit={{ opacity:0, y:-6 }} transition={{ duration:0.3 }}
+                            >
+                              {SUBMITTED_STATUSES[submittedStatusIdx]}
+                            </motion.span>
+                          </AnimatePresence>
+                        </motion.div>
+
+                        {/* Player count */}
                         {playerCount > 0 && (
-                          <p className="tow-submitted-context">
+                          <motion.p className="tow-submitted-context"
+                            initial={{ opacity:0 }} animate={{ opacity:1 }}
+                            transition={{ duration:0.3, delay:0.4 }}
+                          >
                             {playerCount} players are waiting to see which battlefield gets chosen.
-                          </p>
+                          </motion.p>
                         )}
                       </motion.div>
                     )}

@@ -176,3 +176,38 @@
   .tow-entry__cards { flex-direction: column; align-items: center; }
   .tow-entry__card  { min-width: 280px; max-width: 100%; }
 }
+
+/* ── Teacher View card ── */
+.tow-entry__card--teacher {
+  border-color: rgba(167,139,250,0.3);
+  box-shadow: 0 8px 0 rgba(0,0,0,0.35), 0 0 0 1px rgba(167,139,250,0.1);
+}
+
+.tow-entry__card--teacher:hover {
+  border-color: rgba(167,139,250,0.7);
+  box-shadow: 0 8px 0 rgba(0,0,0,0.35), 0 0 24px rgba(167,139,250,0.25);
+}
+
+.tow-entry__card--teacher .tow-entry__card-title {
+  color: #a78bfa;
+}
+
+.tow-entry__card-teacher-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 10px;
+  pointer-events: none;
+}
+
+.tow-entry__card-teacher-badge {
+  background: rgba(124,58,237,0.85);
+  color: #fff;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 7px;
+  letter-spacing: 1px;
+  padding: 4px 8px;
+  border: 1px solid rgba(167,139,250,0.5);
+}

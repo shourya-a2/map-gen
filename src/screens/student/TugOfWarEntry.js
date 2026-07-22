@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import './TugOfWarEntry.css';
 import TowLogo from '../../assets/StudentSide_Thumbnail_TOW_Logo.png';
-import TowGif  from '../../assets/download.gif';
+import TowGif  from '../../assets/Idle animation-TOW.gif';
 
 const springTransition = { type: 'spring', stiffness: 320, damping: 22 };
 
@@ -81,6 +81,31 @@ const TugOfWarEntry = () => {
             <span className="tow-entry__card-title">EXPANDED VIEW</span>
             <span className="tow-entry__card-desc">
               Full-screen experience — wider canvas, more immersive
+            </span>
+          </div>
+          <div className="tow-entry__card-arrow">→</div>
+        </motion.button>
+
+        {/* Teacher View card */}
+        <motion.button
+          className="tow-entry__card tow-entry__card--teacher"
+          onClick={() => navigate('/tug-of-war/teacher')}
+          initial={{ opacity:0, y:20 }}
+          animate={{ opacity:1, y:0 }}
+          transition={{ ...springTransition, delay:0.28 }}
+          whileHover={{ scale:1.03, y:-4 }}
+          whileTap={{ scale:0.97 }}
+        >
+          <div className="tow-entry__card-preview">
+            <img src={TowGif} alt="Teacher view preview" className="tow-entry__card-gif" />
+            <div className="tow-entry__card-teacher-hint">
+              <span className="tow-entry__card-teacher-badge">TEACHER</span>
+            </div>
+          </div>
+          <div className="tow-entry__card-info">
+            <span className="tow-entry__card-title">TEACHER VIEW</span>
+            <span className="tow-entry__card-desc">
+              Review submissions, pick the battlefield, trigger the reveal
             </span>
           </div>
           <div className="tow-entry__card-arrow">→</div>

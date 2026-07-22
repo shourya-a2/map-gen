@@ -1,0 +1,141 @@
+/* LobbyScreenTeacherTugOfWar.css
+   Inherits all layout from LobbyScreenTeacher.css.
+   Only overrides ToW-specific colours and branding. */
+@import './LobbyScreenTeacher.css';
+
+/* Root container — same layout, different class name */
+.tow-teacher-lobby {
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Navbar ── */
+.tow-teacher-lobby .teacher-navbar {
+  background: linear-gradient(180deg, rgba(13,5,32,0.97) 0%, rgba(13,5,32,0.93) 100%);
+  border-bottom: 2px solid rgba(34,211,238,0.4);
+}
+
+/* Logo text — cyan */
+.tow-teacher-logo-text {
+  color: #22d3ee !important;
+  text-shadow: 0 0 15px rgba(34,211,238,0.5) !important;
+}
+
+/* Timer — purple tint */
+.tow-teacher-lobby .teacher-navbar__timer {
+  background: rgba(124,58,237,0.2);
+  border-color: rgba(124,58,237,0.7);
+}
+
+/* Toggle active — cyan */
+.tow-teacher-lobby .teacher-navbar__toggle-switch.active {
+  background: rgba(34,211,238,0.3);
+  border-color: #22d3ee;
+}
+
+.tow-teacher-lobby .teacher-navbar__toggle-switch.active .teacher-navbar__toggle-knob {
+  background: #22d3ee;
+  box-shadow: 0 0 10px rgba(34,211,238,0.5);
+}
+
+/* End Game button — purple */
+.tow-teacher-lobby .teacher-navbar__end-btn {
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  border-color: #a78bfa;
+  box-shadow: 0 4px 15px rgba(124,58,237,0.3);
+}
+
+.tow-teacher-lobby .teacher-navbar__end-btn:hover {
+  box-shadow: 0 6px 25px rgba(124,58,237,0.5);
+}
+
+/* ── Select Battlefield button ── */
+.tow-teacher-select-btn {
+  background: #ffe430 !important;
+  color: #0a0a0f !important;
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 10px !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow:
+    -3px 0 0 0 #b89f00,
+     3px 0 0 0 #b89f00,
+     0 -3px 0 0 #b89f00,
+     0  3px 0 0 #b89f00,
+     0 0 12px rgba(255,228,48,0.4) !important;
+  padding-bottom: 4px !important;
+}
+
+.tow-teacher-select-btn:hover {
+  background: #fff06a !important;
+  box-shadow:
+    -3px 0 0 0 #ccb300,
+     3px 0 0 0 #ccb300,
+     0 -3px 0 0 #ccb300,
+     0  3px 0 0 #ccb300,
+     0 0 20px rgba(255,228,48,0.6) !important;
+}
+
+.tow-teacher-select-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 0 #b89f00 !important;
+}
+
+/* ── Map card glow — cyan ── */
+.tow-teacher-lobby .map-ui-card:hover .map-ui-card__map-frame {
+  filter: drop-shadow(0 0 12px rgba(34,211,238,0.6));
+}
+
+/* ── Badge — cyan tint ── */
+.tow-teacher-lobby .map-ui-card__badge {
+  background: rgba(34,211,238,0.85);
+  color: #0a0a0f;
+  border-color: rgba(255,255,255,0.6);
+}
+
+/* Dev controls — inherit unchanged */
+
+/* ═══════════════════════════════════════════
+   MAP CAROUSEL — ToW purple theme
+   Redefine CSS variables on the same element
+   so all children pick up purple instead of brown
+   ═══════════════════════════════════════════ */
+.map-overlay--tow {
+  --wa-bg-dark:        #0d0520;
+  --wa-bg-brown:       rgba(76, 29, 149, 0.85);
+  --wa-bg-brown-light: rgba(91, 33, 182, 0.9);
+  --wa-text-dark:      #0d0520;
+  --wa-border-gold:        rgba(34, 211, 238, 0.25);
+  --wa-border-gold-strong: rgba(34, 211, 238, 0.55);
+  --wa-gold-sandy:     #22d3ee;
+  background-color: #0d0520;
+}
+
+/* Elements that hardcode brown inline */
+.map-overlay--tow .map-overlay__header {
+  background: rgba(13, 5, 32, 0.92) !important;
+}
+.map-overlay--tow .map-overlay__bottom-bar {
+  background: rgba(10, 8, 20, 0.95) !important;
+}
+.map-overlay--tow .map-overlay__grid-wrapper {
+  background: rgba(13, 5, 32, 0.5) !important;
+}
+.map-overlay--tow .map-overlay__roll-overlay {
+  background: rgba(13, 5, 32, 0.95) !important;
+}
+.map-overlay--tow .map-overlay__celebration {
+  background: rgba(13, 5, 32, 0.96) !important;
+}
+.map-overlay--tow .map-overlay__grid-card-name {
+  background: linear-gradient(transparent, rgba(13,5,32,0.92)) !important;
+}
+.map-overlay--tow .map-overlay__grid-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(124,58,237,0.6) !important;
+}
