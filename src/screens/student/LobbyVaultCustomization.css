@@ -1,0 +1,178 @@
+/* LobbyVaultCustomization.css — responsive lobby layout */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@700;800&display=swap');
+
+/* ─── Root: 1280×720, Codebusters lobby background ─── */
+.vc-lobby {
+  width: 100vw;
+  min-width: 320px;
+  height: 100dvh;
+  min-height: 560px;
+  position: relative;
+  overflow: hidden;
+  background: url('../../assets/codebusters-lobby-bg.png') center center / cover no-repeat;
+  background-color: #0a0519;
+}
+
+/* ─── Dark left column: 440×720, purple gradient matching Figma ─── */
+.vc-lobby-left {
+  position: absolute;
+  top: 0; left: 0;
+  width: min(440px, 100vw);
+  height: 100%;
+  box-sizing: border-box;
+  background: linear-gradient(to right, rgba(55,10,130,0.96) 0%, rgba(40,8,100,0.88) 70%, rgba(20,5,60,0.6) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 32px;
+  gap: 16px;
+}
+
+/* ─── Vault hero card ─── */
+.vc-lobby-vault-card {
+  width: 160px;
+  height: 160px;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(145deg, #251a50, #13102a);
+  border: 1.5px solid rgba(120,90,200,0.5);
+  box-shadow: 0 8px 0 rgba(0,0,0,0.55), 0 14px 40px rgba(0,0,0,0.55);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.vc-lobby-vault-icon {
+  font-size: 68px; line-height: 1;
+  filter: drop-shadow(0 0 12px rgba(157,107,255,0.8)) drop-shadow(0 0 28px rgba(77,240,255,0.4));
+  animation: vcVaultPulse 3s ease-in-out infinite;
+}
+@keyframes vcVaultPulse {
+  0%,100% { filter: drop-shadow(0 0 12px rgba(157,107,255,0.8)) drop-shadow(0 0 28px rgba(77,240,255,0.35)); transform: scale(1); }
+  50%     { filter: drop-shadow(0 0 22px rgba(157,107,255,1)) drop-shadow(0 0 48px rgba(77,240,255,0.6)); transform: scale(1.05); }
+}
+.vc-lobby-vault-card__skin-thumb {
+  position: absolute; inset: 0;
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; opacity: 0.7;
+}
+.vc-lobby-vault-card__skin-thumb > div { width:100%; height:100%; }
+.vc-lobby-vault-card__badge {
+  position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+  padding: 3px 12px;
+  background: rgba(8,5,22,0.75);
+  border: 1px solid rgba(77,240,255,0.4); border-radius: 999px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 9px; font-weight: 800; color: rgba(77,240,255,0.9);
+  white-space: nowrap; z-index: 2;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* ─── Hint text ─── */
+.vc-lobby-hint {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 12px; font-weight: 700;
+  color: rgba(255,255,255,0.4);
+  text-align: center; margin: 0; line-height: 1.5;
+  max-width: 280px;
+}
+
+/* ─── Action buttons ─── */
+.vc-lobby-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+
+.vc-lobby-btn {
+  width: 100%; padding: 13px 16px;
+  background: linear-gradient(175deg, #4a3598, #2d1f6e);
+  border: none; border-radius: 14px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px; font-weight: 900; color: #fff;
+  cursor: pointer; text-align: center;
+  box-shadow: 0 5px 0 #1a1040, 0 8px 20px rgba(0,0,0,0.45);
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+.vc-lobby-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 0 #1a1040, 0 10px 24px rgba(0,0,0,0.45); }
+.vc-lobby-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #1a1040; }
+.vc-lobby-btn--secondary {
+  background: linear-gradient(175deg, #2a2248, #1a1632);
+  box-shadow: 0 5px 0 #0e0c1e, 0 8px 20px rgba(0,0,0,0.4);
+  color: rgba(255,255,255,0.6);
+}
+.vc-lobby-btn--secondary:hover { color: rgba(255,255,255,0.85); }
+
+/* ─── Activity feed ─── */
+.vc-lobby-feed { min-height: 32px; display: flex; align-items: center; width: 100%; }
+.vc-lobby-feed__event {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 10px;
+  background: rgba(157,107,255,0.07);
+  border: 1px solid rgba(157,107,255,0.15);
+  border-radius: 10px; width: 100%;
+}
+.vc-lobby-feed__icon { font-size: 12px; flex-shrink: 0; }
+.vc-lobby-feed__text {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 10px; font-weight: 700;
+  color: rgba(255,255,255,0.4); line-height: 1.4;
+}
+
+@media (max-width: 560px) {
+  .vc-lobby-left {
+    padding: 20px;
+  }
+
+  .vc-lobby-vault-card {
+    width: 132px;
+    height: 132px;
+  }
+
+  .vc-lobby-vault-icon {
+    font-size: 56px;
+  }
+
+  .vc-lobby-applied {
+    padding: 10px;
+  }
+}
+
+/* ─── Applied skin card ─── */
+.vc-lobby-applied {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; width: 100%;
+  background: linear-gradient(135deg, rgba(30,22,62,0.95), rgba(16,12,36,0.98));
+  border: 1.5px solid rgba(77,240,255,0.3); border-radius: 16px;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.45), 0 0 16px rgba(77,240,255,0.12);
+}
+.vc-lobby-applied__thumb {
+  width: 48px; height: 48px; flex-shrink: 0;
+  border: 1.5px solid rgba(77,240,255,0.4); overflow: hidden; border-radius: 8px;
+}
+.vc-lobby-applied__grid {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; width: 100%; height: 100%;
+}
+.vc-lobby-applied__grid > div { width:100%; height:100%; }
+.vc-lobby-applied__info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.vc-lobby-applied__badge {
+  font-family: 'Nunito', sans-serif; font-size: 9px; font-weight: 900;
+  color: #ffcc44; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.vc-lobby-applied__name {
+  font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 900;
+  color: rgba(255,255,255,0.85);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.vc-lobby-applied__sub {
+  font-family: 'Nunito Sans', sans-serif; font-size: 9px; font-weight: 700;
+  color: rgba(255,255,255,0.35);
+}
+.vc-lobby-applied__change {
+  padding: 8px 12px;
+  background: transparent;
+  border: 2px solid rgba(167,139,250,0.4);
+  font-family: 'Nunito', sans-serif; font-size: 9px; font-weight: 900;
+  text-transform: uppercase; color: rgba(167,139,250,0.8);
+  cursor: pointer; flex-shrink: 0; transition: all 0.1s;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+}
+.vc-lobby-applied__change:hover {
+  background: rgba(167,139,250,0.9); color: #0a0a0f;
+  transform: translate(-1px,-1px); box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+}

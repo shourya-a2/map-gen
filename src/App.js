@@ -9,6 +9,7 @@ import TugOfWarEntry          from './screens/student/TugOfWarEntry';
 import LobbyTugOfWar          from './screens/student/LobbyTugOfWar';
 import LobbyTugOfWarExpanded  from './screens/student/LobbyTugOfWarExpanded';
 import TeacherLobbyTugOfWar   from './screens/teacher/TeacherLobbyTugOfWar';
+import LobbyVaultCustomization from './screens/student/LobbyVaultCustomization';
 import TeacherLobby from './screens/teacher/TeacherLobby';
 import TeacherLobbyV2 from './screens/teacher/TeacherLobbyV2';
 
@@ -24,6 +25,7 @@ const App = () => {
       <Route path="/tug-of-war/side-sheet" element={<LobbyTugOfWar />} />
       <Route path="/tug-of-war/expanded"   element={<LobbyTugOfWarExpanded />} />
       <Route path="/tug-of-war/teacher"   element={<TeacherLobbyTugOfWar />} />
+      <Route path="/vault/side-sheet"    element={<LobbyVaultCustomization />} />
       <Route path="/teacher" element={<TeacherLobby />} />
       <Route path="/teacher2" element={<TeacherLobbyV2 />} />
     </Routes>

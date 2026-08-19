@@ -326,6 +326,35 @@ const HomePage = () => {
         </div>
       </motion.div>
 
+      {/* Vault Customization Section */}
+      <motion.div
+        className="mystery-section"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.58 }}
+      >
+        <div className="mystery-card">
+          <div className="mystery-card__content">
+            <span className="mystery-badge" style={{ background:'#7c3aed' }}>VAULT</span>
+            <h3>Vault Customization Studio</h3>
+            <p>
+              Design the look of your own vault. Describe a scene — crystal cave,
+              neon cyber vault, ancient temple — and the skin is applied directly to
+              your vault. No submission, no teacher — it's all yours.
+            </p>
+            <ul className="mystery-features">
+              <li>🏛️ Prompt-driven vault skin generation</li>
+              <li>✨ Instant apply — no teacher required</li>
+              <li>🎨 My Skins library for switching looks</li>
+              <li>🎉 Big reveal animation on completion</li>
+            </ul>
+            <Link to="/vault/side-sheet" className="test-button mystery-btn" style={{ background:'#7c3aed' }}>
+              Customize Your Vault
+            </Link>
+          </div>
+        </div>
+      </motion.div>
+
       {/* Teacher Dashboard Section */}
       <motion.div 
         className="teacher-section"
